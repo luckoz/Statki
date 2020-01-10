@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:id="@+id/listView"
+        tools:listitem="@layout/ship_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ListView>
+
+    <GridView
+        android:id="@+id/grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:listitem="@layout/cell_item"
+        tools:numColumns="8">
+
+
+    </GridView>
+
+    <Button
+        android:id="@+id/nextPBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="next player"
+        />
+
+</LinearLayout>

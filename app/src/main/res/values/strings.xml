@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Battleships</string>
+    <array name="spinnerInput">
+        <item>EASY</item>
+        <item>NORMAL</item>
+        <item>HARD</item>
+    </array>
+</resources>

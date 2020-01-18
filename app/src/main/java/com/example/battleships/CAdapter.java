@@ -94,7 +94,6 @@ public class CAdapter extends BaseAdapter implements View.OnDragListener {
                 Toast.makeText(context, "STARTED", Toast.LENGTH_SHORT).show();
                 return true;
             case DragEvent.ACTION_DROP:
-                // TODO: MOVE SHIP
                 Toast.makeText(context, "DROP", Toast.LENGTH_SHORT).show();
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:

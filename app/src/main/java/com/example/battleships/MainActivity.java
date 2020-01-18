@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
     Game gamePlayer1;
     Game gamePlayer2;
 
+    //TODO:
+    //Create ArrayList<String> instances for listViewAdapters
+    //Add activity context to Game class
+    //popraw ten brzydki ListView
+
     TwoPlayerGameStartingContract contract;
 
     @Override
@@ -60,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         listViewAdapter2 = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, gamePlayer2.setUpShipListView(contract.getMap()));
         gridView.setAdapter(adapter);
         nextPlayerBtn.setOnClickListener(new NextPlayerOnClick());
-
+        shipListView.setAdapter(listViewAdapter);
     }
     public void setUpGame(){
         sharedPrefs = getSharedPreferences("menuSharedPrefs", MODE_PRIVATE);
@@ -78,12 +83,14 @@ public class MainActivity extends AppCompatActivity {
                 currentPlayer++;
                 adapter.setGame(gamePlayer1);
                 adapter.notifyDataSetChanged();
+                shipListView.setAdapter(listViewAdapter);
                 listViewAdapter.notifyDataSetChanged();
                 break;
             case 2:
                 currentPlayer--;
                 adapter.setGame(gamePlayer2);
                 adapter.notifyDataSetChanged();
+                shipListView.setAdapter(listViewAdapter2);
                 listViewAdapter2.notifyDataSetChanged();
                 break;
         }

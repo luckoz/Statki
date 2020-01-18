@@ -39,8 +39,6 @@ class Game {
         initBoard();
     }
 
-
-
     private boolean randomBool() {
         Random random = new Random();
         return random.nextBoolean();
@@ -66,7 +64,6 @@ class Game {
             }
         }
     }
-
 
     private Ship createShip(Integer masztCount) {
         Ship ship = null;

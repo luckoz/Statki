@@ -8,13 +8,6 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/listView"
-        tools:listitem="@layout/ship_list_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </ListView>
-
     <GridView
         android:id="@+id/grid"
         android:layout_width="wrap_content"
@@ -32,5 +25,11 @@
         android:layout_height="wrap_content"
         android:text="next player"
         />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/ship_list_item"></ListView>
 
 </LinearLayout>

@@ -11,10 +11,10 @@ import java.util.Random;
 public class TwoPlayerGameStartingContract {
 
     int shipCount;
-    int maxShipsNum, minShipsNum, maxLength, minLength;
-    int countTwoFiledShips;
-    int countThreeFiledShips;
-    int countFourFiledShips;
+//    int maxShipsNum, minShipsNum, maxLength, minLength;
+//    int countTwoFiledShips;
+//    int countThreeFiledShips;
+//    int countFourFiledShips;
     Map<Integer, Integer> map;
 
 
@@ -34,10 +34,17 @@ public class TwoPlayerGameStartingContract {
                map.put(length,1);
            }
        }
+    }
 
+    TwoPlayerGameStartingContract(int shipCount, Map<Integer, Integer> mapa){
+        map = mapa;
+        this.shipCount = shipCount;
     }
 
 
+    public TwoPlayerGameStartingContract cloneContract(){
+        return new TwoPlayerGameStartingContract(this.shipCount, this.map);
+    }
 
 
 

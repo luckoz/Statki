@@ -1,6 +1,7 @@
 package com.example.battleships;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -18,16 +19,11 @@ class Game {
     Board board = new Board(new ArrayList());
     BoardSize size;
     ArrayList<Ship> shipList = new ArrayList<>();
-    ArrayList<Ship> imprintedShipList = new ArrayList<>();
 
     TwoPlayerGameStartingContract contract;
 
-
-
-    int minLength  = 2;
-    int maxLength =  5;
-    int maxShipsNum =  6;
-    int minShipsNum =  3;
+    ArrayList<String> shipArrayList;
+    ArrayList<Integer> shipIdsToRemove;
 
 
 
@@ -36,6 +32,7 @@ class Game {
 
     Game(TwoPlayerGameStartingContract contract) {
         this.contract = contract;
+//        this.shipArrayList = shipArraylist;
         initBoard();
     }
 
@@ -229,7 +226,13 @@ class Game {
                }
                for (Integer integer : ship.polesIDs) {
                    board.cellArray.get(integer).setStatus(Cell.Status.DROWNED);
+
                }
+               //drowning the ship  - upadte map for listView
+               int shipSizeKey = ship.getSize();
+               int currentValue = contract.getMap().get(shipSizeKey);
+               contract.getMap().put(shipSizeKey, currentValue - 1);
+//                   shipIdsToRemove.add(shipArrayList.indexOf("1 x " + ship.polesIDs.size()));
                return;
            }
        }
@@ -251,11 +254,11 @@ class Game {
         BIG
     }
 //TODO: listview
-    public ArrayList<String> setUpShipListView(Map<Integer, Integer> map){
+    public ArrayList<String> setUpShipListView(Map<Integer, Integer> map, Context context){
 
         ArrayList<String> stringsToReturn = new ArrayList<>();
         for(Integer key : map.keySet()){
-            stringsToReturn.add(map.get(key) + "statków o długości: " + key);
+            stringsToReturn.add(map.get(key) + " x " + key);
         }
         return stringsToReturn;
     }

@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.example.battleships.Game.BOARD_ROW;
 
@@ -28,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPrefs;
 
     String difficulty;
-    ArrayList ships;
+    ArrayList<String> ships;
+    ArrayList<String> ships2;
+
     int shipsNum;
     int shipMaxSize;
     int shipMinSize;
@@ -41,16 +44,17 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO:
     //Create ArrayList<String> instances for listViewAdapters
-    //Add activity context to Game class
     //popraw ten brzydki ListView
 
     TwoPlayerGameStartingContract contract;
+    TwoPlayerGameStartingContract contract2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contract = new TwoPlayerGameStartingContract(Constants.MAX_SHIP_NUM, Constants.MIN_SHIP_NUM, Constants.MAX_LENGTH, Constants.MIN_LENGTH);
+        contract2 = contract.cloneContract();
         setUpGame();
         initLayouts();
     }
@@ -61,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         gridView = findViewById(R.id.grid);
         gridView.setNumColumns(BOARD_ROW);
         adapter = new CAdapter(MainActivity.this, gamePlayer1);
-        listViewAdapter = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, gamePlayer1.setUpShipListView(contract.getMap()));
-        listViewAdapter2 = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, gamePlayer2.setUpShipListView(contract.getMap()));
+        listViewAdapter = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, ships);
+        listViewAdapter2 = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, ships2);
         gridView.setAdapter(adapter);
         nextPlayerBtn.setOnClickListener(new NextPlayerOnClick());
         shipListView.setAdapter(listViewAdapter);
@@ -72,11 +76,16 @@ public class MainActivity extends AppCompatActivity {
         isGame2P = sharedPrefs.getBoolean(MenuActivity.GAME_PLAYER_KEY,false);
         if(isGame2P){
             gamePlayer1 = new Game(contract);
-            gamePlayer2 = new Game(contract);
+            gamePlayer2 = new Game(contract2);
         }else {
             gamePlayer1= new Game(contract);
         }
+        ships = setUpList(contract.getMap());
+        ships2 = setUpList(contract2.getMap());
     }
+
+
+
     private void switchGridView(){
         switch (currentPlayer){
             case 1:
@@ -84,14 +93,18 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setGame(gamePlayer1);
                 adapter.notifyDataSetChanged();
                 shipListView.setAdapter(listViewAdapter);
+                ships = setUpList(contract.getMap() );
                 listViewAdapter.notifyDataSetChanged();
+//                ships.removeAll(gamePlayer1.shipIdsToRemove);
                 break;
             case 2:
                 currentPlayer--;
                 adapter.setGame(gamePlayer2);
                 adapter.notifyDataSetChanged();
                 shipListView.setAdapter(listViewAdapter2);
+                ships2 = setUpList(contract2.getMap());
                 listViewAdapter2.notifyDataSetChanged();
+//                ships2.removeAll(gamePlayer2.shipIdsToRemove);
                 break;
         }
     }
@@ -134,4 +147,13 @@ public class MainActivity extends AppCompatActivity {
             switchGridView();
         }
     }
+
+    private ArrayList<String> setUpList(Map<Integer, Integer> map){
+        ArrayList<String> stringsToReturn = new ArrayList<>();
+        for(Integer key : map.keySet()){
+            stringsToReturn.add(map.get(key) + " x " + key);
+        }
+        return stringsToReturn;
+    }
+
 }

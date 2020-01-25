@@ -22,6 +22,9 @@ public class Ship{
         this.isHorizontal = isHorizontal;
     }
 
+    public int getSize(){
+        return polesIDs.size();
+    }
 
     @Override
     public String toString(){

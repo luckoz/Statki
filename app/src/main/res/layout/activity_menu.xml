@@ -37,6 +37,24 @@
         android:background="@color/colorCheck"
         />
 
+    <CheckBox
+        android:id="@+id/multiPlayerCheckB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="multi - player game"
+        android:layout_gravity="center_horizontal"/>
+
+    <CheckBox
+        android:id="@+id/randomShipPosBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="random ship position"
+        android:layout_gravity="center_horizontal"/>
+
+
+
+
+
 
 
 

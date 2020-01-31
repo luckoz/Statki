@@ -1,20 +1,24 @@
 package com.example.battleships;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-class Game {
+class Game extends MainActivity{
 
     private static final String TAG = "GAME CLASS";
     ArrayList<String> shiplistArray = new ArrayList<>();
 
     public static final int BOARD_ROW = 8;
     public static final int BOARD_SIZE = BOARD_ROW*BOARD_ROW;
+    private int drownedShipsNum;
+
 
     Board board = new Board(new ArrayList());
     BoardSize size;
@@ -24,10 +28,6 @@ class Game {
 
     ArrayList<String> shipArrayList;
     ArrayList<Integer> shipIdsToRemove;
-
-
-
-
 
 
     Game(TwoPlayerGameStartingContract contract) {
@@ -203,13 +203,6 @@ class Game {
     }
 
 
-//    private int getSize(){
-//        switch (size){
-//            case BIG:
-//                return jkdsfnosdf;
-//            case SMALL:
-//        }
-//    }
 
     public void updateCellStatus(Integer cellIndex){
 
@@ -226,6 +219,10 @@ class Game {
                }
                for (Integer integer : ship.polesIDs) {
                    board.cellArray.get(integer).setStatus(Cell.Status.DROWNED);
+                   drownedShipsNum++;
+                   if(drownedShipsNum == shipList.size()){
+                       end();
+                   }
 
                }
                //drowning the ship  - upadte map for listView
@@ -238,6 +235,7 @@ class Game {
        }
         board.cellArray.get(cellIndex).setStatus(Cell.Status.MISS);
     }
+
 
     public Ship getShipById(int id){
         for (Ship ship:shipList) {
@@ -254,7 +252,7 @@ class Game {
         BIG
     }
 //TODO: listview
-    public ArrayList<String> setUpShipListView(Map<Integer, Integer> map, Context context){
+    public ArrayList<String> setUpShipListView(Map<Integer, Integer> map){
 
         ArrayList<String> stringsToReturn = new ArrayList<>();
         for(Integer key : map.keySet()){
@@ -262,4 +260,12 @@ class Game {
         }
         return stringsToReturn;
     }
+    @Override
+    public void end() {
+        winnerPlayerName = "Player " + currentPlayer;
+        super.end();
+    }
+
+
 }
+

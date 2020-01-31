@@ -1,5 +1,8 @@
 package com.example.battleships;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPrefs;
 
     String difficulty;
+
+    String winnerPlayerName;
+    String firstPlayerName;
+    String secPlayerName;
+
     ArrayList<String> ships;
     ArrayList<String> ships2;
 
@@ -42,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
     Game gamePlayer1;
     Game gamePlayer2;
 
-    //TODO:
-    //Create ArrayList<String> instances for listViewAdapters
-    //popraw ten brzydki ListView
+
 
     TwoPlayerGameStartingContract contract;
     TwoPlayerGameStartingContract contract2;
@@ -155,5 +161,36 @@ public class MainActivity extends AppCompatActivity {
         }
         return stringsToReturn;
     }
+    public void end(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        dialogBuilder.setTitle("THE END");
+        dialogBuilder.setMessage("The " + winnerPlayerName + " has won THE GAME");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.setNegativeButton("AGAIN!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                gamePlayer1 = null;
+                gamePlayer2 = null;
+                setUpGame();
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.create();
+        dialogBuilder.show();
+
+
+    }
+//    private Context getWinnerPlayerContext(){
+//        if(currentPlayer == 1){
+//            return gamePlayer1.getCo;
+//        }
+//        else return gamePlayer2;
+//
+//    }
 
 }

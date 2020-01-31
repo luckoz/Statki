@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -13,10 +14,14 @@ public class MenuActivity extends AppCompatActivity {
     Button statsBtn;
     Button optionsBtn;
 
+    CheckBox isShipPositionRandomChck;
+    CheckBox isGameMultiPlayerChck;
+
     SharedPreferences sharedPreferences;
 
     public static final String GAME_PLAYER_KEY = "GAME_PLAYER_KEY";
-    boolean isGameMP = true;
+    boolean isGameMP;
+
 
 
     @Override
@@ -29,6 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     private void initLayouts() {
         initViews();
         initButtons();
+        initOptions();
     }
 
     private void initButtons() {
@@ -41,22 +47,30 @@ public class MenuActivity extends AppCompatActivity {
         statsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Stats
+                isShipPositionRandomChck.setVisibility(View.GONE);
+                isGameMultiPlayerChck.setVisibility(View.GONE);
+                optionsBtn.setVisibility(View.VISIBLE);
+                statsBtn.setVisibility(View.GONE);
             }
         });
         optionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: options
+                isShipPositionRandomChck.setVisibility(View.VISIBLE);
+                isGameMultiPlayerChck.setVisibility(View.VISIBLE);
+                optionsBtn.setVisibility(View.GONE);
+                statsBtn.setVisibility(View.VISIBLE);
             }
         });
     }
 
     private void initMainActivity() {
+
         sharedPreferences = getSharedPreferences("menuSharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putBoolean(GAME_PLAYER_KEY, isGameMP);
+        editor.putBoolean("isGameMP", isGameMultiPlayerChck.isChecked());
+        editor.putBoolean("areShipsPosRandom", isShipPositionRandomChck.isChecked());
         editor.apply();
 
 
@@ -64,9 +78,18 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
     private void initViews() {
         newGameBtn = findViewById(R.id.newGameBtn);
         statsBtn = findViewById(R.id.statsBtn);
         optionsBtn = findViewById(R.id.optionsBtn);
+    }
+    private void initOptions(){
+        isGameMultiPlayerChck = findViewById(R.id.multiPlayerCheckB);
+        isShipPositionRandomChck = findViewById(R.id.randomShipPosBtn);
+
+        isShipPositionRandomChck.setVisibility(View.GONE);
+        isGameMultiPlayerChck.setVisibility(View.GONE);
     }
 }

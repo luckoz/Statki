@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-class Game extends MainActivity{
+//Trages, Game nie może rozszerzać aktywności!!! Co te diwe klasy mają wspólnego ze sobą???
+//class Game extends MainActivity{
+class Game {
 
     private static final String TAG = "GAME CLASS";
     ArrayList<String> shiplistArray = new ArrayList<>();
@@ -62,24 +64,21 @@ class Game extends MainActivity{
         }
     }
 
+
+    //skoro ta metoda tworzy obiekt klasy Ship, to w powinna się znajdowaćw klasie Ship.class
+    //nie mniej, możesz to na razie zostawić
     private Ship createShip(Integer masztCount) {
         Ship ship = null;
-//        boolean shouldRandomAgain = true;
             do {
-//                for (Integer key: contract.map.keySet()) {
-//
-//                    for (int i = contract.getMap().get(key); i>0 ; i--) {
-                        int firstRandomId = getRandomId();
-                        Boolean isHorizontal = randomBool();
-                        if (isHorizontal && firstRandomId % BOARD_ROW <= BOARD_ROW - masztCount || !isHorizontal && firstRandomId + BOARD_ROW * (masztCount - 1) <= BOARD_SIZE) {
+                int firstRandomId = getRandomId();
+                Boolean isHorizontal = randomBool();
+                if (isHorizontal && firstRandomId % BOARD_ROW <= BOARD_ROW - masztCount || !isHorizontal && firstRandomId + BOARD_ROW * (masztCount - 1) <= BOARD_SIZE) {
 //                            shouldRandomAgain = false;
-                            ship = new Ship(generateArrayListForShip(masztCount, firstRandomId, isHorizontal), masztCount, isHorizontal);
-                            if (isShipOnBusyCells(ship)) {
-                                ship = null;
-                            }
-                        }
-//                    }
-//                }
+                    ship = new Ship(generateArrayListForShip(masztCount, firstRandomId, isHorizontal), masztCount, isHorizontal);
+                    if (isShipOnBusyCells(ship)) {
+                        ship = null;
+                    }
+                }
         }while (/*shouldRandomAgain || */ship == null );
 
 
@@ -95,6 +94,11 @@ class Game extends MainActivity{
         return ship;
     }
 
+
+    //ZADANIE tę metodę nalezy usunąć i logikę uprościć
+    //Zamiast powtarzać w kółko algorytm sprawdzający, czy statek nie stworzył się przypadkiem na zajętych polach,
+    //Napisz metodę w klasie Board, która zwróci listę ids, które nie są jeszcze zajęte + metodę, która zwróci listę ids, na kórych można zbudować statek
+    //(Nie wiem, czy precyzyjnie wyjasniłem o co chodzi, jeśłi nie dość jasno albo zbyt trudne - pomiń) :)
     private boolean isShipOnBusyCells(Ship ship) {
         boolean isShipOnBusyCells = false;
         for (Integer id : ship.polesIDs) {
@@ -110,6 +114,7 @@ class Game extends MainActivity{
         return isShipOnBusyCells;
     }
 
+    //to zdecydowanie do klasy SHip przenieść trzeba będzie
     private ArrayList<Integer> generateArrayListForShip(int length, Integer firstTile, boolean isHorizontal){
         ArrayList<Integer> idList = new ArrayList<>();
         idList.clear();
@@ -127,7 +132,7 @@ class Game extends MainActivity{
     }
 
 
-
+    //ta metodą będzie zastąpiona metodą update cells w klasie Board, gdzie nowy status podamy jako argument.
     private void setBusyCells(Ship ship){
         for (int item : getIdsToSetBusy(ship)){
             board.cellArray.get(item).setStatus(Cell.Status.BUSY);
@@ -135,6 +140,8 @@ class Game extends MainActivity{
 
     }
 
+
+    //ZADANIE 2: Całą tą metodę należy przenieść do klasy Board.class
     private ArrayList<Integer> getIdsToSetBusy(Ship ship){
         ArrayList<Integer> idsToSetBusy = new ArrayList<>();
         ArrayList<Integer> idsToRemove = new ArrayList<>();
@@ -186,6 +193,15 @@ class Game extends MainActivity{
         return idsToSetBusy;
     }
 
+    //Wszystkie 4 poniższe metody określają w jakis sposób obiekt klasy statek, a właściwie jego powiązanie z planszą
+    //Na pewno nie mogą tutaj zostać, proponuję przenieść je wszystkie do klasy Board i zmienić nieco nazewnictwo
+    // coś na kształt:
+    //private boolean isShipOnLeftSide(Ship ship)
+
+    //Druga sprawa:
+    // ship.polesIDs.get(0) | ship.polesIDs.size()- te konstrukcje są  okropne, trzeba zastąpić je metodami  w klasie Ship:
+    //coś w stylu getFirstId() | getSize()
+
     private boolean isOnLeft(Ship ship){
         return ship.polesIDs.get(0) % BOARD_ROW == 0;
     }
@@ -197,13 +213,12 @@ class Game extends MainActivity{
     private boolean isOnRight(Ship ship){
         return ship.polesIDs.get(ship.polesIDs.size() - 1) % BOARD_ROW == BOARD_ROW - 1;
     }
-
     private boolean isOnBottom(Ship ship){
         return ship.polesIDs.get(ship.polesIDs.size() - 1) + BOARD_ROW > BOARD_SIZE - 1;
     }
 
 
-
+    //Po zaimplementowaniu metod w klasie Board, to będzie względnie do usunięcia, choć logika stąd się przyda w innym miejscu
     public void updateCellStatus(Integer cellIndex){
 
        for(Ship ship : shipList){
@@ -219,10 +234,10 @@ class Game extends MainActivity{
                }
                for (Integer integer : ship.polesIDs) {
                    board.cellArray.get(integer).setStatus(Cell.Status.DROWNED);
-                   drownedShipsNum++;
-                   if(drownedShipsNum == shipList.size()){
-                       end();
-                   }
+//                   drownedShipsNum++;
+//                   if(drownedShipsNum == shipList.size()){
+//                       end();
+//                   }
 
                }
                //drowning the ship  - upadte map for listView
@@ -237,6 +252,7 @@ class Game extends MainActivity{
     }
 
 
+    //ZADANIE Do przeniesienia do klasy Board!
     public Ship getShipById(int id){
         for (Ship ship:shipList) {
             if(ship.polesIDs.contains(id)){
@@ -260,11 +276,11 @@ class Game extends MainActivity{
         }
         return stringsToReturn;
     }
-    @Override
-    public void end() {
-        winnerPlayerName = "Player " + currentPlayer;
-        super.end();
-    }
+//    @Override
+//    public void end() {
+//        winnerPlayerName = "Player " + currentPlayer;
+//        super.end();
+//    }
 
 
 }

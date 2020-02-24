@@ -21,8 +21,6 @@ public class Cell {
         return status;
     }
 
-
-
     public enum Status{
         UNCOVERED,
         MISS,

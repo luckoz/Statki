@@ -1,10 +1,7 @@
 package com.example.battleships;
 
-import android.content.Context;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -24,8 +21,8 @@ public class TwoPlayerGameStartingContract {
         shipCount =   new Random().nextInt((maxShipsNum - minShipsNum) + 1) + minShipsNum;
         for(int i = 0; i <= shipCount; i++){
            //liczba statków
-
            Integer length = (int) ((Math.random() * ((maxLength - minLength) + 1)) + minLength);
+
            //długość statków
            if(map != null && map.containsKey(length)) {
                int num = map.get(length);
@@ -45,8 +42,6 @@ public class TwoPlayerGameStartingContract {
     public TwoPlayerGameStartingContract cloneContract(){
         return new TwoPlayerGameStartingContract(this.shipCount, this.map);
     }
-
-
 
     public boolean isMapEmpty(){
         return map.isEmpty();

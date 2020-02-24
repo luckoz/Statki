@@ -50,17 +50,28 @@ public class MainActivity extends AppCompatActivity {
     Game gamePlayer1;
     Game gamePlayer2;
 
-
-
     TwoPlayerGameStartingContract contract;
-    TwoPlayerGameStartingContract contract2;
+
+    //Witaj Lukasz, zrobiłem lekkie zmiany, napisałem Ci trochę komentarzy z zadaniami, które chciałbym, żebyś spóbował zrobić
+    //Zasadniczo nie poprawią one wcale póki co działania applikacji, ale uporządkują kod, co pozwoli nam dokończyć sensownie projekt, kóry zrobił się chaotyczny
+    //i zaczyna być ciężo z nim pracować.
+    //Zacznimjmy od uporządkowania klasy Game i rozbicia jej na sensowne klasy Ship i Board, kóre są praktycznie pustą ideą, ale nic nie robią. PRzeczy to założeniom programowania obiekotwego
+    //
+    //Rzeczy, kóre chciałbymm, żebyś spróbowałzrobić opisałem komentarzem z tagiem "ZADANIE" na początku
+    //Możesz łatwo znaleźć zadania wciskając kombinację Ctrl + Shift + F -> wyszukiwanie w całym projekcie
+    //
+    //Pamiętaj, że jeśli cokolwiek  Cię przerośnie to zwyczajnie to napisz a ja postaram się poprawić z komentarzem wyjaśniającym
+    //W tym tygodniu na pewno się nie pojawię jeszcze, ale postaram się w kolejnym wyrobić.
+    //
+    //Póki co logikę, którą próbowałeś zrealizować WinCondition zakomentowałem, bo nie działa i trochę nie w tę stronę to trzeba robić ;)
+    //Ale wrócimy do tego, jak tylko uporządkujemy kod. :)
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contract = new TwoPlayerGameStartingContract(Constants.MAX_SHIP_NUM, Constants.MIN_SHIP_NUM, Constants.MAX_LENGTH, Constants.MIN_LENGTH);
-        contract2 = contract.cloneContract();
         setUpGame();
         initLayouts();
     }
@@ -82,15 +93,13 @@ public class MainActivity extends AppCompatActivity {
         isGame2P = sharedPrefs.getBoolean(MenuActivity.GAME_PLAYER_KEY,false);
         if(isGame2P){
             gamePlayer1 = new Game(contract);
-            gamePlayer2 = new Game(contract2);
+            gamePlayer2 = new Game(contract);
         }else {
             gamePlayer1= new Game(contract);
         }
         ships = setUpList(contract.getMap());
-        ships2 = setUpList(contract2.getMap());
+        ships2 = setUpList(contract.getMap());
     }
-
-
 
     private void switchGridView(){
         switch (currentPlayer){
@@ -108,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setGame(gamePlayer2);
                 adapter.notifyDataSetChanged();
                 shipListView.setAdapter(listViewAdapter2);
-                ships2 = setUpList(contract2.getMap());
+                ships2 = setUpList(contract.getMap());
                 listViewAdapter2.notifyDataSetChanged();
 //                ships2.removeAll(gamePlayer2.shipIdsToRemove);
                 break;
@@ -126,24 +135,18 @@ public class MainActivity extends AppCompatActivity {
                 shipMaxSize = 5;
                 shipMinSize = 3;
                 break;
-            case "NORMAL":
-                shipsNum = 5;
-                shipMaxSize = 4;
-                shipMinSize = 2;
-                break;
             case "HARD":
                 shipsNum = 7;
                 shipMaxSize = 2;
                 shipMinSize = 1;
                 break;
+            case "NORMAL":
             default:
                 shipsNum = 5;
                 shipMaxSize = 4;
                 shipMinSize = 2;
                 break;
-
         }
-
     }
 
 

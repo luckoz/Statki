@@ -26,6 +26,14 @@ public class Ship{
         return polesIDs.size();
     }
 
+
+
+
+
+
+
+
+    //method used only for logs, to see if ships are created correctly
     @Override
     public String toString(){
         String orient;
@@ -36,5 +44,4 @@ public class Ship{
         }
         return "length: " + length + " Orientation: " + orient + " ids: " + polesIDs.toString();
     }
-
 }

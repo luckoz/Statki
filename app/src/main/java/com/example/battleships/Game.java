@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-//Trages, Game nie może rozszerzać aktywności!!! Co te diwe klasy mają wspólnego ze sobą???
-//class Game extends MainActivity{
+//*Trages, Game nie może rozszerzać aktywności!!! Co te diwe klasy mają wspólnego ze sobą???*
+//*class Game extends MainActivity{*
 class Game {
 
     private static final String TAG = "GAME CLASS";
@@ -58,41 +58,17 @@ class Game {
         if(mapFromContract != null) {
             for (Integer liczba : mapFromContract.keySet()) {
                 for (int i = 0; i < mapFromContract.get(liczba); i++) {
-                    setBusyCells(createShip(liczba));
+
+                                board.updateCells(board.getCellArrayByIds(getIdsToSetBusy(Ship.createShip(liczba))), Cell.Status.BUSY);
+                                
+
                 }
             }
         }
     }
 
 
-    //skoro ta metoda tworzy obiekt klasy Ship, to w powinna się znajdowaćw klasie Ship.class
-    //nie mniej, możesz to na razie zostawić
-    private Ship createShip(Integer masztCount) {
-        Ship ship = null;
-            do {
-                int firstRandomId = getRandomId();
-                Boolean isHorizontal = randomBool();
-                if (isHorizontal && firstRandomId % BOARD_ROW <= BOARD_ROW - masztCount || !isHorizontal && firstRandomId + BOARD_ROW * (masztCount - 1) <= BOARD_SIZE) {
-//                            shouldRandomAgain = false;
-                    ship = new Ship(generateArrayListForShip(masztCount, firstRandomId, isHorizontal), masztCount, isHorizontal);
-                    if (isShipOnBusyCells(ship)) {
-                        ship = null;
-                    }
-                }
-        }while (/*shouldRandomAgain || */ship == null );
 
-
-        shipList.add(ship);
-        //
-        ArrayList<Integer> leftover = new ArrayList<>();
-        for (Cell cell  : board.cellArray) {
-            if(cell.getStatus().equals(Cell.Status.UNCOVERED))
-                leftover.add(cell.getIndex());
-        }
-        Log.d("LEFT ID ", "LEFT IDS FOR NEW SHIPS" +  leftover.toString());
-        Log.d(TAG, ship.toString());
-        return ship;
-    }
 
 
     //ZADANIE tę metodę nalezy usunąć i logikę uprościć
@@ -114,31 +90,17 @@ class Game {
         return isShipOnBusyCells;
     }
 
-    //to zdecydowanie do klasy SHip przenieść trzeba będzie
-    private ArrayList<Integer> generateArrayListForShip(int length, Integer firstTile, boolean isHorizontal){
-        ArrayList<Integer> idList = new ArrayList<>();
-        idList.clear();
-        if (isHorizontal) {
-            for (int i = 0; i < length; i++) {
-                idList.add(firstTile + i);
-            }
-        } else {
-            for (int i = 0; i < length; i++) {
-                idList.add(firstTile + i * BOARD_ROW);
-            }
-        }
-        Log.d(TAG,  idList.toString());
-        return idList;
-    }
 
 
-    //ta metodą będzie zastąpiona metodą update cells w klasie Board, gdzie nowy status podamy jako argument.
-    private void setBusyCells(Ship ship){
-        for (int item : getIdsToSetBusy(ship)){
-            board.cellArray.get(item).setStatus(Cell.Status.BUSY);
-        }
 
-    }
+
+//    //ta metodą będzie zastąpiona metodą update cells w klasie Board, gdzie nowy status podamy jako argument.
+//    private void setBusyCells(Ship ship){
+//        for (int item : getIdsToSetBusy(ship)){
+//            board.cellArray.get(item).setStatus(Cell.Status.BUSY);
+//        }
+//
+//    }
 
 
     //ZADANIE 2: Całą tą metodę należy przenieść do klasy Board.class

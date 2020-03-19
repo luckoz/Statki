@@ -52,21 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     TwoPlayerGameStartingContract contract;
 
-    //Witaj Lukasz, zrobiłem lekkie zmiany, napisałem Ci trochę komentarzy z zadaniami, które chciałbym, żebyś spóbował zrobić
-    //Zasadniczo nie poprawią one wcale póki co działania applikacji, ale uporządkują kod, co pozwoli nam dokończyć sensownie projekt, kóry zrobił się chaotyczny
-    //i zaczyna być ciężo z nim pracować.
-    //Zacznimjmy od uporządkowania klasy Game i rozbicia jej na sensowne klasy Ship i Board, kóre są praktycznie pustą ideą, ale nic nie robią. PRzeczy to założeniom programowania obiekotwego
-    //
-    //Rzeczy, kóre chciałbymm, żebyś spróbowałzrobić opisałem komentarzem z tagiem "ZADANIE" na początku
-    //Możesz łatwo znaleźć zadania wciskając kombinację Ctrl + Shift + F -> wyszukiwanie w całym projekcie
-    //
-    //Pamiętaj, że jeśli cokolwiek  Cię przerośnie to zwyczajnie to napisz a ja postaram się poprawić z komentarzem wyjaśniającym
-    //W tym tygodniu na pewno się nie pojawię jeszcze, ale postaram się w kolejnym wyrobić.
-    //
-    //Póki co logikę, którą próbowałeś zrealizować WinCondition zakomentowałem, bo nie działa i trochę nie w tę stronę to trzeba robić ;)
-    //Ale wrócimy do tego, jak tylko uporządkujemy kod. :)
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,17 +1,9 @@
 package com.example.battleships;
 
-
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-//*Trages, Game nie może rozszerzać aktywności!!! Co te diwe klasy mają wspólnego ze sobą???*
-//*class Game extends MainActivity{*
 class Game {
 
     private static final String TAG = "GAME CLASS";
@@ -61,7 +53,8 @@ class Game {
         }
     }
 
-    //Po zaimplementowaniu metod w klasie Board, to będzie względnie do usunięcia, choć logika stąd się przyda w innym miejscu
+
+    //TODO Zadanie: spróbuj się zająć tą metodą, żeby spełniała swoje poprzednie funkcje, tylko popraw ją by pasowała do aktualnej implementacji
     public void updateCellStatusOnClicked(Integer cellIndex){
 
        for(Ship ship : shipList){

@@ -16,7 +16,7 @@ import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static com.example.battleships.Game.BOARD_ROW;
+import static com.example.battleships.Constants.BOARD_ROW;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        contract = new TwoPlayerGameStartingContract(Constants.MAX_SHIP_NUM, Constants.MIN_SHIP_NUM, Constants.MAX_LENGTH, Constants.MIN_LENGTH);
+        contract = new TwoPlayerGameStartingContract(Constants.MAX_SHIP_NUM, Constants.MIN_SHIP_NUM, Constants.MAX_SHIP_SIZE, Constants.MIN_SHIP_SIZE);
         setUpGame();
         initLayouts();
     }

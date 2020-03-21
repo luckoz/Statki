@@ -2,6 +2,9 @@ package com.example.battleships;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Handler;
+
+import static com.example.battleships.Cell.Status.*;
 
 class Game {
 
@@ -26,9 +29,9 @@ class Game {
         board = new Board();
         Map<Integer, Integer> mapFromContract = contract.getMap();
         if(mapFromContract != null) {
-            for (Integer number : mapFromContract.keySet()) {
-                for (int i = 0; i < mapFromContract.get(number); i++) {
-                    board.addRandomShip(number);
+            for (int shipSize : mapFromContract.keySet()) {
+                for (int i = 0; i < mapFromContract.get(shipSize); i++) {
+                    board.addRandomShip(shipSize);
                 }
             }
         }
@@ -37,34 +40,53 @@ class Game {
     //TODO Zadanie: spróbuj się zająć tą metodą, żeby spełniała swoje poprzednie funkcje, tylko popraw ją by pasowała do aktualnej implementacji
     public void updateCellStatusOnClicked(Integer cellIndex){
 
+        switch (board.getCellStatusById(cellIndex)){
+            case BUSY:
+                Ship shipOnClickedCell = getShipById(cellIndex);
+                if(shipOnClickedCell == null){
+                    board.updateSingleCell(cellIndex, MISS);
+                } else {
+                    board.updateSingleCell(cellIndex, HIT);
+                    board.drownShip()
+                }
+
+            case UNCOVERED:
+                board.updateSingleCell(cellIndex, MISS);
+
+            case DROWNED:
+            case MISS:
+            case HIT:
+                return;
+        }
+
+        //neie iterować po wszystkich statkach, tylko wziąc
        for(Ship ship : board.ships){
-           if(board.cellArray.get(cellIndex).getStatus().equals(Cell.Status.DROWNED)){
+           if(board.getCellStatusById(cellIndex).equals(DROWNED)){
                return;
            }
            if(ship.IDs.contains(cellIndex)){
-               board.cellArray.get(cellIndex).setStatus(Cell.Status.HIT);
-               for (Integer poleId : ship.IDs){
-                   if(!board.cellArray.get(poleId).getStatus().equals(Cell.Status.HIT)){
+               board.updateSingleCell(cellIndex, HIT);
+               for (Integer Id : ship.IDs){
+                   if(!board.getCellStatusById(Id).equals(HIT)){
                        return;
                    }
                }
-               for (Integer integer : ship.IDs) {
-                   board.cellArray.get(integer).setStatus(Cell.Status.DROWNED);
-//                   drownedShipsNum++;
-//                   if(drownedShipsNum == shipList.size()){
-//                       end();
-//                   }
-
+               for (int id : ship.IDs) {
+                   board.updateSingleCell(id, DROWNED);
                }
+
+
+
+
                //drowning the ship  - upadte map for listView
-               int shipSizeKey = ship.getSize();
-               int currentValue = contract.getMap().get(shipSizeKey);
-               contract.getMap().put(shipSizeKey, currentValue - 1);
-//                   shipIdsToRemove.add(shipArrayList.indexOf("1 x " + ship.polesIDs.size()));
-               return;
+//               int shipSizeKey = ship.getSize();
+//               int currentValue = contract.getMap().get(shipSizeKey);
+//               contract.getMap().put(shipSizeKey, currentValue - 1);
+////                   shipIdsToRemove.add(shipArrayList.indexOf("1 x " + ship.polesIDs.size()));
+//               return;
            }
        }
-        board.cellArray.get(cellIndex).setStatus(Cell.Status.MISS);
+        board.updateSingleCell(cellIndex, MISS);
     }
 
 

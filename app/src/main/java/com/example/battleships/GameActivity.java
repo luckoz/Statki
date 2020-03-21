@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -73,7 +74,8 @@ public class GameActivity extends AppCompatActivity {
     }
     public void setUpGame(){
         sharedPrefs = getSharedPreferences("menuSharedPrefs", MODE_PRIVATE);
-        isGame2P = sharedPrefs.getBoolean(MenuActivity.GAME_PLAYER_KEY,false);
+        isGame2P = sharedPrefs.getBoolean("isGameMP",false);
+        Log.d("GAME_ACTIVITY", String.valueOf(isGame2P));
         if(isGame2P){
             gamePlayer1 = new Game(contract);
             gamePlayer2 = new Game(contract);

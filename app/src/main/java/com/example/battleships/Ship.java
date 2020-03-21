@@ -8,7 +8,8 @@ import static com.example.battleships.Constants.BOARD_SIZE;
 public class Ship{
     private int length;
     public ArrayList<Integer> IDs;
-    Boolean isHorizontal;
+    boolean isHorizontal;
+    boolean isDrowned = false;
 
     public Ship(int firstId, int length, boolean isHorizontal) {
         this.IDs = generateIdsListByFirst(length, firstId,  isHorizontal);
@@ -68,5 +69,9 @@ public class Ship{
     }
     boolean isOnBottom(){
         return getLastId() + BOARD_ROW > BOARD_SIZE - 1;
+    }
+
+    void drownTheShip(){
+        isDrowned = true;
     }
 }

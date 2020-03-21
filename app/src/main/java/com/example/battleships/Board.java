@@ -11,8 +11,6 @@ import static com.example.battleships.Constants.MIN_SHIP_SIZE;
 public class Board {
 
     ArrayList<Cell> cellArray;
-
-
     public ArrayList<Ship> ships;
 
     public Board(){
@@ -94,6 +92,8 @@ public class Board {
         ships.add(newShip);
         setBusyCellsForShip(newShip);
     }
+        //TODO:
+    drownShip()
     
     private ArrayList<Integer> getPossibleFirstIdsForHorizontal(int size){
         ArrayList<Integer> idsToReturn = new ArrayList<>();
@@ -134,6 +134,26 @@ public class Board {
         }
         return idsToReturn;
     }
+
+    //metoda, która zwraca bool czy wszystkei staki są DROWNED
+    public boolean areAllShipsDrowned(){
+        for (Ship ship : ships) {
+            if(!ship.isDrowned){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Ship getShipById(int id){
+        for (Ship ship : ships) {
+            if(ship.IDs.contains(id)){
+                return ship;
+            }
+        }
+        return null;
+    }
+
 
     private void setBusyCellsForShip(Ship ship){
         ArrayList<Integer> idsToSetBusy = new ArrayList<>();

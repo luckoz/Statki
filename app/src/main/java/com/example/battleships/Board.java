@@ -5,6 +5,7 @@ import java.util.Random;
 
 import static com.example.battleships.Game.BOARD_ROW;
 import static com.example.battleships.Game.BOARD_SIZE;
+import static com.example.battleships.Game.MAX_SHIP_SIZE;
 
 
 public class Board {
@@ -14,9 +15,13 @@ public class Board {
 
     public ArrayList<Ship> ships;
 
-    public Board(ArrayList cellArray){
-        this.cellArray = cellArray;
-        ships = new ArrayList<>();
+    public Board(){
+        cellArray = new ArrayList<>();
+        for(int i = 0; i < BOARD_SIZE; i++){
+            Cell z = new Cell(i);
+            cellArray.add(z);
+        }
+        ships = new ArrayList<Ship>();
     }
 
     public void updateCells(ArrayList <Cell> cellsToUpdate, Cell.Status newStatus){
@@ -45,6 +50,9 @@ public class Board {
 
     public Cell getCell(int id){
         return cellArray.get(id);
+    }
+    public Cell.Status getCellStatusById(int id){
+        return cellArray.get(id).getStatus();
     }
 
     private ArrayList<Integer> getNotBusyIds(){
@@ -77,7 +85,7 @@ public class Board {
     
     public void addRandomShip(){
         Random random = new Random();
-        int randomSize = random.nextInt(?) + 1; //TODO: ZADANIE remove hardcoded 4 - a max ship size (HOW do i get to that max ship size in MainActivity?)
+        int randomSize = random.nextInt(MAX_SHIP_SIZE) + 1; //TODO: ZADANIE remove hardcoded 4 - a max ship size
 
         addRandomShip(randomSize);
     }
@@ -94,13 +102,13 @@ public class Board {
                 //to close to the right edge
                 continue;
             }
-            boolean isAnyBusy = false;
+            boolean noneIsBusy = true;
             for (int i = notBusyId; i < notBusyId + size; i++){
-                if(getCell(i).getStatus() == Cell.Status.BUSY){
-                    isAnyBusy = true;
+                if(getCellStatusById(i) == Cell.Status.BUSY){
+                    noneIsBusy = false;
                 }
             }
-            if(isAnyBusy){
+            if(noneIsBusy){
                 idsToReturn.add(notBusyId);
             }
         }
@@ -110,17 +118,17 @@ public class Board {
     private ArrayList<Integer> getPossibleFirstIdsForVertical(int size){
         ArrayList<Integer> idsToReturn = new ArrayList<>();
         for (int notBusyId : getNotBusyIds()){
-            if((notBusyId + size * BOARD_ROW) % BOARD_ROW > notBusyId % BOARD_ROW){
+            if((notBusyId + size * BOARD_ROW) >= BOARD_SIZE){
                 //to close to the bottom edge
                 continue;
             }
-            boolean isAnyBusy = false;
+            boolean noneIsBusy = true;
             for (int i = notBusyId; i < notBusyId + size * BOARD_ROW; i += BOARD_ROW){
-                if(getCell(i).getStatus() == Cell.Status.BUSY){
-                    isAnyBusy = true;
+                if(getCellStatusById(i) == Cell.Status.BUSY){
+                    noneIsBusy = false;
                 }
             }
-            if(isAnyBusy){
+            if(noneIsBusy){
                 idsToReturn.add(notBusyId);
             }
         }

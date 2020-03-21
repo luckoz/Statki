@@ -47,7 +47,7 @@ public class CAdapter extends BaseAdapter implements View.OnDragListener {
         cell = inflater.inflate(R.layout.cell_item, parent, false);
         final ImageButton btn = cell.findViewById(R.id.cellBtn);
 
-         switch (game.board.cellArray.get(position).status){
+         switch (game.getCellStatusById(position)){
             case UNCOVERED:
             case BUSY:
                 btn.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));

@@ -2,18 +2,17 @@ package com.example.battleships;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 
 class Game {
 
     private static final String TAG = "GAME CLASS";
 
+    public static final int MAX_SHIP_SIZE = 4;
     public static final int BOARD_ROW = 8;
     public static final int BOARD_SIZE = BOARD_ROW*BOARD_ROW;
+
+    private Board board;
     private int drownedShipsNum;
-
-
-    Board board = new Board(new ArrayList());
     BoardSize size;
 
     public TwoPlayerGameStartingContract contract;
@@ -21,28 +20,13 @@ class Game {
     ArrayList<String> shipArrayList;
     ArrayList<Integer> shipIdsToRemove;
 
-
     Game(TwoPlayerGameStartingContract contract) {
         this.contract = contract;
         initBoard();
     }
 
-    private boolean randomBool() {
-        Random random = new Random();
-        return random.nextBoolean();
-    }
-
-    private Integer getRandomId() {
-        return (int) (Math.random() * 64);
-
-    }
-
-
     private void initBoard(){
-        for(int i = 0; i < BOARD_SIZE; i++){
-            Cell z = new Cell(i);
-            board.cellArray.add(z);
-        }
+        board = new Board();
         Map<Integer, Integer> mapFromContract = contract.getMap();
         if(mapFromContract != null) {
             for (Integer number : mapFromContract.keySet()) {
@@ -52,7 +36,6 @@ class Game {
             }
         }
     }
-
 
     //TODO Zadanie: spróbuj się zająć tą metodą, żeby spełniała swoje poprzednie funkcje, tylko popraw ją by pasowała do aktualnej implementacji
     public void updateCellStatusOnClicked(Integer cellIndex){
@@ -96,6 +79,10 @@ class Game {
             }
         }
         return null;
+    }
+
+    public Cell.Status getCellStatusById(int id){
+        return board.getCellStatusById(id);
     }
 
     enum BoardSize  {

@@ -1,50 +1,34 @@
 package com.example.battleships;
 
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 public class TwoPlayerGameStartingContract {
 
-    int shipCount;
-//    int maxShipsNum, minShipsNum, maxLength, minLength;
-//    int countTwoFiledShips;
-//    int countThreeFiledShips;
-//    int countFourFiledShips;
-    Map<Integer, Integer> map;
-
+    private Map<Integer, Integer> map;
 
     TwoPlayerGameStartingContract(int maxShipsNum, int minShipsNum, int maxLength, int minLength){
-
+        Random rand = new Random();
         map = new HashMap<Integer, Integer>();
-        shipCount =   new Random().nextInt((maxShipsNum - minShipsNum) + 1) + minShipsNum;
-        for(int i = 0; i <= shipCount; i++){
-           //liczba statków
-           Integer length = (int) ((Math.random() * ((maxLength - minLength) + 1)) + minLength);
+        int shipCount = rand.nextInt(maxShipsNum - minShipsNum) + minShipsNum;
+        for(int i = 0; i < shipCount; i++){
+            Log.d("CONTRACT", "ILOSC STATKOW: " + shipCount);
+           //długość statku
+           Integer length = rand.nextInt(maxLength - minLength) + minLength;
 
-           //długość statków
-           if(map != null && map.containsKey(length)) {
-               int num = map.get(length);
-               map.put(length, num++);
+           //dodajemy statek do mapy
+           if(map.containsKey(length)) {
+               int num = map.getOrDefault(length, 0);
+               map.put(length, num + 1);
            } else {
-               map.put(length,1);
+               map.put(length, 1);
            }
        }
-    }
-
-    TwoPlayerGameStartingContract(int shipCount, Map<Integer, Integer> mapa){
-        map = mapa;
-        this.shipCount = shipCount;
-    }
-
-
-    public TwoPlayerGameStartingContract cloneContract(){
-        return new TwoPlayerGameStartingContract(this.shipCount, this.map);
-    }
-
-    public boolean isMapEmpty(){
-        return map.isEmpty();
+        Log.d("CONTRACT", "MAPA: " + map.toString());
     }
 
     public Map<Integer, Integer> getMap() {

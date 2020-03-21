@@ -1,7 +1,6 @@
 package com.example.battleships;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -11,21 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import static com.example.battleships.Constants.BOARD_ROW;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     ListView shipListView;
     GridView gridView;
     Button nextPlayerBtn;
 
     CAdapter adapter;
-    CAdapter adapter2P;
     ArrayAdapter listViewAdapter;
     ArrayAdapter listViewAdapter2;
 
@@ -34,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     String difficulty;
 
     String winnerPlayerName;
-    String firstPlayerName;
-    String secPlayerName;
 
     ArrayList<String> ships;
     ArrayList<String> ships2;
@@ -44,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public int shipMaxSize;
     int shipMinSize;
     int shipLength;
-    Boolean isGame2P;
+    boolean isGame2P = false;
     int currentPlayer = 1;
 
     Game gamePlayer1;
@@ -61,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
         initLayouts();
     }
     public void initLayouts(){
-
         nextPlayerBtn = findViewById(R.id.nextPBtn);
+        if(!isGame2P) {
+            nextPlayerBtn.setVisibility(View.GONE);
+        }
         shipListView = findViewById(R.id.listView);
         gridView = findViewById(R.id.grid);
         gridView.setNumColumns(BOARD_ROW);
-        adapter = new CAdapter(MainActivity.this, gamePlayer1);
+
+        adapter = new CAdapter(GameActivity.this, gamePlayer1);
         listViewAdapter = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, ships);
         listViewAdapter2 = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, ships2);
         gridView.setAdapter(adapter);
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         if(isGame2P){
             gamePlayer1 = new Game(contract);
             gamePlayer2 = new Game(contract);
-        }else {
+        } else {
             gamePlayer1= new Game(contract);
         }
         ships = setUpList(contract.getMap());
@@ -150,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         return stringsToReturn;
     }
     public void end(){
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameActivity.this);
         dialogBuilder.setTitle("THE END");
         dialogBuilder.setMessage("The " + winnerPlayerName + " has won THE GAME");
         dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

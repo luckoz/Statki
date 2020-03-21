@@ -3,10 +3,10 @@ package com.example.battleships;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static com.example.battleships.Game.BOARD_ROW;
-import static com.example.battleships.Game.BOARD_SIZE;
-import static com.example.battleships.Game.MAX_SHIP_SIZE;
-
+import static com.example.battleships.Constants.BOARD_ROW;
+import static com.example.battleships.Constants.BOARD_SIZE;
+import static com.example.battleships.Constants.MAX_SHIP_SIZE;
+import static com.example.battleships.Constants.MIN_SHIP_SIZE;
 
 public class Board {
 
@@ -85,7 +85,7 @@ public class Board {
     
     public void addRandomShip(){
         Random random = new Random();
-        int randomSize = random.nextInt(MAX_SHIP_SIZE) + 1; //TODO: ZADANIE remove hardcoded 4 - a max ship size
+        int randomSize = random.nextInt(MAX_SHIP_SIZE - MIN_SHIP_SIZE) + MIN_SHIP_SIZE;
 
         addRandomShip(randomSize);
     }

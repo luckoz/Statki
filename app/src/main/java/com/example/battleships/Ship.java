@@ -1,8 +1,9 @@
 package com.example.battleships;
 
 import java.util.ArrayList;
-import static com.example.battleships.Game.BOARD_ROW;
-import static com.example.battleships.Game.BOARD_SIZE;
+
+import static com.example.battleships.Constants.BOARD_ROW;
+import static com.example.battleships.Constants.BOARD_SIZE;
 
 public class Ship{
     private int length;

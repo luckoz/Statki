@@ -7,9 +7,6 @@ class Game {
 
     private static final String TAG = "GAME CLASS";
 
-    public static final int MAX_SHIP_SIZE = 4;
-    public static final int BOARD_ROW = 8;
-    public static final int BOARD_SIZE = BOARD_ROW*BOARD_ROW;
 
     private Board board;
     private int drownedShipsNum;

@@ -77,7 +77,7 @@ public class Board {
     
     public void addRandomShip(){
         Random random = new Random();
-        int randomSize = random.nextInt("?????") + 1; //TODO: ZADANIE remove hardcoded 4 - a max ship size
+        int randomSize = random.nextInt(?) + 1; //TODO: ZADANIE remove hardcoded 4 - a max ship size (HOW do i get to that max ship size in MainActivity?)
 
         addRandomShip(randomSize);
     }

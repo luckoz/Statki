@@ -6,7 +6,7 @@ import static com.example.battleships.Game.BOARD_SIZE;
 
 public class Ship{
     private int length;
-    private ArrayList<Integer> IDs;
+    public ArrayList<Integer> IDs;
     Boolean isHorizontal;
 
     public Ship(int firstId, int length, boolean isHorizontal) {

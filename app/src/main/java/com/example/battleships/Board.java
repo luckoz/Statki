@@ -11,7 +11,8 @@ public class Board {
 
     ArrayList<Cell> cellArray;
 
-    private ArrayList<Ship> ships;
+
+    public ArrayList<Ship> ships;
 
     public Board(ArrayList cellArray){
         this.cellArray = cellArray;
@@ -76,7 +77,7 @@ public class Board {
     
     public void addRandomShip(){
         Random random = new Random();
-        int randomSize = random.nextInt(4) + 1; //TODO: ZADANIE remove hardcoded 4 - a max ship size
+        int randomSize = random.nextInt("?????") + 1; //TODO: ZADANIE remove hardcoded 4 - a max ship size
 
         addRandomShip(randomSize);
     }

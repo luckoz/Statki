@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> ships2;
 
     int shipsNum;
-    int shipMaxSize;
+    public int shipMaxSize;
     int shipMinSize;
     int shipLength;
     Boolean isGame2P;

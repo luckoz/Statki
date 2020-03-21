@@ -16,7 +16,7 @@ class Game {
     Board board = new Board(new ArrayList());
     BoardSize size;
 
-    TwoPlayerGameStartingContract contract;
+    public TwoPlayerGameStartingContract contract;
 
     ArrayList<String> shipArrayList;
     ArrayList<Integer> shipIdsToRemove;
@@ -57,18 +57,18 @@ class Game {
     //TODO Zadanie: spróbuj się zająć tą metodą, żeby spełniała swoje poprzednie funkcje, tylko popraw ją by pasowała do aktualnej implementacji
     public void updateCellStatusOnClicked(Integer cellIndex){
 
-       for(Ship ship : shipList){
+       for(Ship ship : board.ships){
            if(board.cellArray.get(cellIndex).getStatus().equals(Cell.Status.DROWNED)){
                return;
            }
-           if(ship.polesIDs.contains(cellIndex)){
+           if(ship.IDs.contains(cellIndex)){
                board.cellArray.get(cellIndex).setStatus(Cell.Status.HIT);
-               for (Integer poleId : ship.polesIDs){
+               for (Integer poleId : ship.IDs){
                    if(!board.cellArray.get(poleId).getStatus().equals(Cell.Status.HIT)){
                        return;
                    }
                }
-               for (Integer integer : ship.polesIDs) {
+               for (Integer integer : ship.IDs) {
                    board.cellArray.get(integer).setStatus(Cell.Status.DROWNED);
 //                   drownedShipsNum++;
 //                   if(drownedShipsNum == shipList.size()){
@@ -90,8 +90,8 @@ class Game {
 
     //ZADANIE Do przeniesienia do klasy Board!
     public Ship getShipById(int id){
-        for (Ship ship:shipList) {
-            if(ship.polesIDs.contains(id)){
+        for (Ship ship:board.ships) {
+            if(ship.IDs.contains(id)){
                 return ship;
             }
         }

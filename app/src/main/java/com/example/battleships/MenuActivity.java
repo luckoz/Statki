@@ -74,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
         editor.apply();
 
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
         startActivity(intent);
     }
 

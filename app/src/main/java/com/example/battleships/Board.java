@@ -52,6 +52,15 @@ public class Board {
     public Cell.Status getCellStatusById(int id){
         return cellArray.get(id).getStatus();
     }
+    public ArrayList<Integer> getBusyCellsIds(){
+        ArrayList<Integer> ids = new ArrayList<>();
+        for(Cell cell: cellArray){
+            if(cell.getStatus() == Cell.Status.BUSY){
+                ids.add(cell.getIndex());
+            }
+        }
+        return ids;
+    }
 
     private ArrayList<Integer> getNotBusyIds(){
         ArrayList<Integer> possibleIds = new ArrayList<>();
@@ -70,9 +79,15 @@ public class Board {
 
         if(isHorizontal){
             ArrayList<Integer> availableFirstIds = getPossibleFirstIdsForHorizontal(givenSize);
+            if(availableFirstIds.size() < 1){
+                throw new IllegalStateException("NO POSSIBLE POSITION TO PLACE HORIZONTAL SHIP!");
+            }
             randomFirstId = availableFirstIds.get(random.nextInt(availableFirstIds.size()));
         } else {
             ArrayList<Integer> availableFirstIds = getPossibleFirstIdsForVertical(givenSize);
+            if(availableFirstIds.size() < 1){
+                throw new IllegalStateException("NO POSSIBLE POSITION TO PLACE VERTICAL SHIP!");
+            }
             randomFirstId = availableFirstIds.get(random.nextInt(availableFirstIds.size()));
         }
 
@@ -92,8 +107,11 @@ public class Board {
         ships.add(newShip);
         setBusyCellsForShip(newShip);
     }
-        //TODO:
-    drownShip()
+
+    public void drownShip(Ship ship){
+        updateCellsByIds(ship.IDs, Cell.Status.DROWNED);
+        ship.drownTheShip();
+    }
     
     private ArrayList<Integer> getPossibleFirstIdsForHorizontal(int size){
         ArrayList<Integer> idsToReturn = new ArrayList<>();

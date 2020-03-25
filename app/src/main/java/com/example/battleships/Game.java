@@ -1,8 +1,14 @@
 package com.example.battleships;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
 
 import static com.example.battleships.Cell.Status.*;
 
@@ -10,87 +16,82 @@ class Game {
 
     private static final String TAG = "GAME CLASS";
 
-
+    private GameActivity context;
     private Board board;
-    private int drownedShipsNum;
-    BoardSize size;
 
-    public TwoPlayerGameStartingContract contract;
-
-    ArrayList<String> shipArrayList;
-    ArrayList<Integer> shipIdsToRemove;
-
-    Game(TwoPlayerGameStartingContract contract) {
-        this.contract = contract;
-        initBoard();
+    Game(GameActivity context, TwoPlayerGameStartingContract contract) {
+        this.context = context;
+        initBoardByMap(contract.getMap());
     }
 
-    private void initBoard(){
+    private void initBoardByMap(@NonNull HashMap<Integer, Integer> mapFromContract){
         board = new Board();
-        Map<Integer, Integer> mapFromContract = contract.getMap();
-        if(mapFromContract != null) {
-            for (int shipSize : mapFromContract.keySet()) {
-                for (int i = 0; i < mapFromContract.get(shipSize); i++) {
-                    board.addRandomShip(shipSize);
+            for (Map.Entry<Integer, Integer> entry : mapFromContract.entrySet()) {
+                int shipsAmount = entry.getValue();
+                for (int i = 0; i < shipsAmount; i++) {
+                    try{
+                        board.addRandomShip(entry.getKey());
+                    } catch (IllegalStateException e){
+                        //try again - reached a state with no available positions for new ship
+                        initBoardByMap(mapFromContract);
+                    }
                 }
             }
-        }
+
+        Log.d("GAME", "Created Ships IDs are: " + board.getBusyCellsIds());
     }
 
-    //TODO Zadanie: spróbuj się zająć tą metodą, żeby spełniała swoje poprzednie funkcje, tylko popraw ją by pasowała do aktualnej implementacji
-    public void updateCellStatusOnClicked(Integer cellIndex){
-
-        switch (board.getCellStatusById(cellIndex)){
+    public void updateCellStatusOnClicked(Integer cellIndex) {
+        switch (board.getCellStatusById(cellIndex)) {
             case BUSY:
                 Ship shipOnClickedCell = getShipById(cellIndex);
-                if(shipOnClickedCell == null){
+                if (shipOnClickedCell == null) {
                     board.updateSingleCell(cellIndex, MISS);
                 } else {
                     board.updateSingleCell(cellIndex, HIT);
-                    board.drownShip()
+                   handleShipHit(shipOnClickedCell);
                 }
-
+                break;
             case UNCOVERED:
                 board.updateSingleCell(cellIndex, MISS);
-
+                break;
             case DROWNED:
             case MISS:
             case HIT:
                 return;
         }
+    }
 
-        //neie iterować po wszystkich statkach, tylko wziąc
-       for(Ship ship : board.ships){
-           if(board.getCellStatusById(cellIndex).equals(DROWNED)){
-               return;
-           }
-           if(ship.IDs.contains(cellIndex)){
-               board.updateSingleCell(cellIndex, HIT);
-               for (Integer Id : ship.IDs){
-                   if(!board.getCellStatusById(Id).equals(HIT)){
-                       return;
-                   }
-               }
-               for (int id : ship.IDs) {
-                   board.updateSingleCell(id, DROWNED);
-               }
+    private void handleShipHit(Ship shipHit){
+        for(int i : shipHit.IDs){
+            if(board.getCellStatusById(i) == BUSY){
+                return;
+            }
+        }
+        board.drownShip(shipHit);
+        if(board.areAllShipsDrowned()){
+            endGame();
+        }
+    }
 
-
-
-
-               //drowning the ship  - upadte map for listView
-//               int shipSizeKey = ship.getSize();
-//               int currentValue = contract.getMap().get(shipSizeKey);
-//               contract.getMap().put(shipSizeKey, currentValue - 1);
-////                   shipIdsToRemove.add(shipArrayList.indexOf("1 x " + ship.polesIDs.size()));
-//               return;
-           }
-       }
-        board.updateSingleCell(cellIndex, MISS);
+    private void endGame(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("GAME ENDED!")
+                //TODO ZADANIE 2: Pokombinuj i spróbuj, żeby ten dialog wyświetlał informację o tym, który gracz wygrał :)
+            .setMessage("Game was finished with result blahblah blah")
+            .setCancelable(false)
+            .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    context.finish();
+                }
+            });
+        builder.create();
+        builder.show();
     }
 
 
-    //ZADANIE Do przeniesienia do klasy Board!
+    // TODO: ZADANIE 1:  Przenieś tę metodę do klasy Board!
     public Ship getShipById(int id){
         for (Ship ship:board.ships) {
             if(ship.IDs.contains(id)){
@@ -109,6 +110,7 @@ class Game {
         MEDIUM,
         BIG
     }
+
 //TODO: listview
     public ArrayList<String> setUpShipListView(Map<Integer, Integer> map){
 
@@ -118,12 +120,6 @@ class Game {
         }
         return stringsToReturn;
     }
-//    @Override
-//    public void end() {
-//        winnerPlayerName = "Player " + currentPlayer;
-//        super.end();
-//    }
-
 
 }
 

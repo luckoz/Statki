@@ -27,7 +27,7 @@ public class CAdapter extends BaseAdapter implements View.OnDragListener {
 
     @Override
     public int getCount() {
-        return 64;
+        return Constants.BOARD_SIZE;
     }
 
     @Override

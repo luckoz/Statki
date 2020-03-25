@@ -77,10 +77,10 @@ public class GameActivity extends AppCompatActivity {
         isGame2P = sharedPrefs.getBoolean("isGameMP",false);
         Log.d("GAME_ACTIVITY", String.valueOf(isGame2P));
         if(isGame2P){
-            gamePlayer1 = new Game(contract);
-            gamePlayer2 = new Game(contract);
+            gamePlayer1 = new Game(this, contract);
+            gamePlayer2 = new Game(this, contract);
         } else {
-            gamePlayer1= new Game(contract);
+            gamePlayer1= new Game(this, contract);
         }
         ships = setUpList(contract.getMap());
         ships2 = setUpList(contract.getMap());
@@ -108,8 +108,6 @@ public class GameActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
 
     public void setDifficulty(){
 
@@ -149,30 +147,32 @@ public class GameActivity extends AppCompatActivity {
         }
         return stringsToReturn;
     }
-    public void end(){
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameActivity.this);
-        dialogBuilder.setTitle("THE END");
-        dialogBuilder.setMessage("The " + winnerPlayerName + " has won THE GAME");
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        dialogBuilder.setNegativeButton("AGAIN!", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                gamePlayer1 = null;
-                gamePlayer2 = null;
-                setUpGame();
-                dialog.dismiss();
-            }
-        });
-        dialogBuilder.create();
-        dialogBuilder.show();
 
-
-    }
+//
+//    public void end(){
+//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameActivity.this);
+//        dialogBuilder.setTitle("THE END");
+//        dialogBuilder.setMessage("The " + winnerPlayerName + " has won THE GAME");
+//        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        dialogBuilder.setNegativeButton("AGAIN!", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                gamePlayer1 = null;
+//                gamePlayer2 = null;
+//                setUpGame();
+//                dialog.dismiss();
+//            }
+//        });
+//        dialogBuilder.create();
+//        dialogBuilder.show();
+//
+//
+//    }
 //    private Context getWinnerPlayerContext(){
 //        if(currentPlayer == 1){
 //            return gamePlayer1.getCo;

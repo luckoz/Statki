@@ -51,7 +51,7 @@ public class CAdapter extends BaseAdapter implements View.OnDragListener {
             case UNCOVERED:
             case BUSY:
                 btn.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
-                if(PREVIEW_SHIP_MODE && game.getShipById(position) != null)
+                if(PREVIEW_SHIP_MODE && game.board.getShipById(position) != null)
                     btn.setBackgroundColor(context.getResources().getColor(R.color.colorPreview));
                 break;
             case HIT:

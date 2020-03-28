@@ -31,7 +31,9 @@ public class GameActivity extends AppCompatActivity {
 
     String difficulty;
 
-    String winnerPlayerName;
+    String player1Name = "1";
+    String player2Name = "2";
+
 
     ArrayList<String> ships;
     ArrayList<String> ships2;
@@ -77,10 +79,10 @@ public class GameActivity extends AppCompatActivity {
         isGame2P = sharedPrefs.getBoolean("isGameMP",false);
         Log.d("GAME_ACTIVITY", String.valueOf(isGame2P));
         if(isGame2P){
-            gamePlayer1 = new Game(this, contract);
-            gamePlayer2 = new Game(this, contract);
+            gamePlayer1 = new Game(this, contract, player1Name);
+            gamePlayer2 = new Game(this, contract, player2Name);
         } else {
-            gamePlayer1= new Game(this, contract);
+            gamePlayer1= new Game(this, contract, player1Name);
         }
         ships = setUpList(contract.getMap());
         ships2 = setUpList(contract.getMap());

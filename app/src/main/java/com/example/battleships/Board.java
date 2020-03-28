@@ -223,4 +223,5 @@ public class Board {
         idsToSetBusy.removeAll(idsToRemove);
         updateCellsByIds( idsToSetBusy, Cell.Status.BUSY);
     }
+
 }

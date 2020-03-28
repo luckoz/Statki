@@ -17,11 +17,14 @@ class Game {
     private static final String TAG = "GAME CLASS";
 
     private GameActivity context;
-    private Board board;
+    public Board board;
+    String currentPlayer;
 
-    Game(GameActivity context, TwoPlayerGameStartingContract contract) {
+    Game(GameActivity context, TwoPlayerGameStartingContract contract, String currentPlayer) {
         this.context = context;
+        this.currentPlayer = currentPlayer;
         initBoardByMap(contract.getMap());
+
     }
 
     private void initBoardByMap(@NonNull HashMap<Integer, Integer> mapFromContract){
@@ -44,7 +47,7 @@ class Game {
     public void updateCellStatusOnClicked(Integer cellIndex) {
         switch (board.getCellStatusById(cellIndex)) {
             case BUSY:
-                Ship shipOnClickedCell = getShipById(cellIndex);
+                Ship shipOnClickedCell = board.getShipById(cellIndex);
                 if (shipOnClickedCell == null) {
                     board.updateSingleCell(cellIndex, MISS);
                 } else {
@@ -77,8 +80,8 @@ class Game {
     private void endGame(){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("GAME ENDED!")
-                //TODO ZADANIE 2: Pokombinuj i spróbuj, żeby ten dialog wyświetlał informację o tym, który gracz wygrał :)
-            .setMessage("Game was finished with result blahblah blah")
+                //V TODO ZADANIE 2: Pokombinuj i spróbuj, żeby ten dialog wyświetlał informację o tym, który gracz wygrał :)
+            .setMessage("Game was finished with result: player " + currentPlayer + " wins")
             .setCancelable(false)
             .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -91,15 +94,8 @@ class Game {
     }
 
 
-    // TODO: ZADANIE 1:  Przenieś tę metodę do klasy Board!
-    public Ship getShipById(int id){
-        for (Ship ship:board.ships) {
-            if(ship.IDs.contains(id)){
-                return ship;
-            }
-        }
-        return null;
-    }
+    // V TODO: ZADANIE 1:  Przenieś tę metodę do klasy Board!
+
 
     public Cell.Status getCellStatusById(int id){
         return board.getCellStatusById(id);

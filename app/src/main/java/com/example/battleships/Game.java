@@ -19,12 +19,13 @@ class Game {
     private GameActivity context;
     public Board board;
     String currentPlayer;
+    Map<Integer, Integer> shipsMapForListView;
 
     Game(GameActivity context, TwoPlayerGameStartingContract contract, String currentPlayer) {
         this.context = context;
         this.currentPlayer = currentPlayer;
         initBoardByMap(contract.getMap());
-
+        shipsMapForListView = contract.getMap();
     }
 
     private void initBoardByMap(@NonNull HashMap<Integer, Integer> mapFromContract){
@@ -71,16 +72,27 @@ class Game {
                 return;
             }
         }
-        board.drownShip(shipHit);
+        drownShip(shipHit);
+
+    }
+
+    private void drownShip(Ship shipToDrown){
+        board.drownShip(shipToDrown);
+        updateContractMapOnDrown(shipToDrown.getSize());
+
+        context.updateListView(currentPlayer, shipsMapForListView);
         if(board.areAllShipsDrowned()){
             endGame();
         }
     }
 
+    private void updateContractMapOnDrown(int drownedShipSize){
+        //TODO Zajęcia ZADANIE 1 cz. 1
+    }
+
     private void endGame(){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("GAME ENDED!")
-                //V TODO ZADANIE 2: Pokombinuj i spróbuj, żeby ten dialog wyświetlał informację o tym, który gracz wygrał :)
             .setMessage("Game was finished with result: player " + currentPlayer + " wins")
             .setCancelable(false)
             .setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -92,10 +104,6 @@ class Game {
         builder.create();
         builder.show();
     }
-
-
-    // V TODO: ZADANIE 1:  Przenieś tę metodę do klasy Board!
-
 
     public Cell.Status getCellStatusById(int id){
         return board.getCellStatusById(id);

@@ -144,43 +144,24 @@ public class GameActivity extends AppCompatActivity {
 
     private ArrayList<String> setUpList(Map<Integer, Integer> map){
         ArrayList<String> stringsToReturn = new ArrayList<>();
+        stringsToReturn.add("Pozostały do zatopienia: ");
         for(Integer key : map.keySet()){
-            stringsToReturn.add(map.get(key) + " x " + key);
+            //TODO domowe ZADANIE 1
+            //Napisac logikę, najlepiej metodę, która obsłuży polksą odmianę słowa "statek" zależnie od ilości pozostałych statkó do zbicia
+            stringsToReturn.add(map.get(key) + " statki " + key + " - masztowe");
         }
         return stringsToReturn;
     }
 
-//
-//    public void end(){
-//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(GameActivity.this);
-//        dialogBuilder.setTitle("THE END");
-//        dialogBuilder.setMessage("The " + winnerPlayerName + " has won THE GAME");
-//        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//        dialogBuilder.setNegativeButton("AGAIN!", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                gamePlayer1 = null;
-//                gamePlayer2 = null;
-//                setUpGame();
-//                dialog.dismiss();
-//            }
-//        });
-//        dialogBuilder.create();
-//        dialogBuilder.show();
-//
-//
-//    }
-//    private Context getWinnerPlayerContext(){
-//        if(currentPlayer == 1){
-//            return gamePlayer1.getCo;
-//        }
-//        else return gamePlayer2;
-//
-//    }
+
+    //TODO Zajęcia ZADANIE 1 cz. 2
+    public void updateListView(String player, Map<Integer, Integer> updatedMap){
+
+    }
+
+
+    //TODO Zajęcia ZADANIE 2
+    //override onBackPressed to show dialog for confirmation of losing current game data
+
 
 }

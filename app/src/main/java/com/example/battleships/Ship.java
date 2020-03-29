@@ -44,7 +44,7 @@ public class Ship{
         return idList;
     }
 
-    //method used only for logs, to see if ships are created correctly
+    //method used only for logs, to see if shipsListForListView are created correctly
     @Override
     public String toString(){
         String orient;

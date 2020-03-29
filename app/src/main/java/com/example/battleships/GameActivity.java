@@ -35,8 +35,8 @@ public class GameActivity extends AppCompatActivity {
     String player2Name = "2";
 
 
-    ArrayList<String> ships;
-    ArrayList<String> ships2;
+    ArrayList<String> shipsListForListView;
+    ArrayList<String> shipsListForListView2;
 
     int shipsNum;
     public int shipMaxSize;
@@ -68,8 +68,8 @@ public class GameActivity extends AppCompatActivity {
         gridView.setNumColumns(BOARD_ROW);
 
         adapter = new CAdapter(GameActivity.this, gamePlayer1);
-        listViewAdapter = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, ships);
-        listViewAdapter2 = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, ships2);
+        listViewAdapter = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, shipsListForListView);
+        listViewAdapter2 = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, shipsListForListView2);
         gridView.setAdapter(adapter);
         nextPlayerBtn.setOnClickListener(new NextPlayerOnClick());
         shipListView.setAdapter(listViewAdapter);
@@ -84,8 +84,8 @@ public class GameActivity extends AppCompatActivity {
         } else {
             gamePlayer1= new Game(this, contract, player1Name);
         }
-        ships = setUpList(contract.getMap());
-        ships2 = setUpList(contract.getMap());
+        shipsListForListView = setUpList(contract.getMap());
+        shipsListForListView2 = setUpList(contract.getMap());
     }
 
     private void switchGridView(){
@@ -95,18 +95,18 @@ public class GameActivity extends AppCompatActivity {
                 adapter.setGame(gamePlayer1);
                 adapter.notifyDataSetChanged();
                 shipListView.setAdapter(listViewAdapter);
-                ships = setUpList(contract.getMap() );
+                shipsListForListView = setUpList(contract.getMap() );
                 listViewAdapter.notifyDataSetChanged();
-//                ships.removeAll(gamePlayer1.shipIdsToRemove);
+//                shipsListForListView.removeAll(gamePlayer1.shipIdsToRemove);
                 break;
             case 2:
                 currentPlayer--;
                 adapter.setGame(gamePlayer2);
                 adapter.notifyDataSetChanged();
                 shipListView.setAdapter(listViewAdapter2);
-                ships2 = setUpList(contract.getMap());
+                shipsListForListView2 = setUpList(contract.getMap());
                 listViewAdapter2.notifyDataSetChanged();
-//                ships2.removeAll(gamePlayer2.shipIdsToRemove);
+//                shipsListForListView2.removeAll(gamePlayer2.shipIdsToRemove);
                 break;
         }
     }
@@ -144,24 +144,49 @@ public class GameActivity extends AppCompatActivity {
 
     private ArrayList<String> setUpList(Map<Integer, Integer> map){
         ArrayList<String> stringsToReturn = new ArrayList<>();
-        stringsToReturn.add("Pozostały do zatopienia: ");
+//        stringsToReturn.add("Pozostało do zatopienia: ");
         for(Integer key : map.keySet()){
             //TODO domowe ZADANIE 1
-            //Napisac logikę, najlepiej metodę, która obsłuży polksą odmianę słowa "statek" zależnie od ilości pozostałych statkó do zbicia
+            //Napisac logikę, najlepiej metodę, która obsłuży polską odmianę słowa "statek" zależnie od ilości pozostałych statkó do zbicia
             stringsToReturn.add(map.get(key) + " statki " + key + " - masztowe");
         }
         return stringsToReturn;
     }
 
-
-    //TODO Zajęcia ZADANIE 1 cz. 2
     public void updateListView(String player, Map<Integer, Integer> updatedMap){
+        if(player.equals(player1Name)){
+            shipsListForListView.clear();
+            shipsListForListView.addAll(setUpList(updatedMap));
+            listViewAdapter.notifyDataSetChanged();
+        }else {
+            shipsListForListView2.clear();
+            shipsListForListView2.addAll(setUpList(updatedMap));
+            listViewAdapter2.notifyDataSetChanged();
+        }
 
     }
 
 
-    //TODO Zajęcia ZADANIE 2
-    //override onBackPressed to show dialog for confirmation of losing current game data
 
-
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder backPressedAlertDialog = new AlertDialog.Builder(this);
+        backPressedAlertDialog.setTitle("");
+        backPressedAlertDialog.setMessage("");
+        backPressedAlertDialog.setNegativeButton("NEY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        backPressedAlertDialog.setPositiveButton("YEY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        backPressedAlertDialog.create();
+        backPressedAlertDialog.show();
+    }
 }

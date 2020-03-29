@@ -87,7 +87,8 @@ class Game {
     }
 
     private void updateContractMapOnDrown(int drownedShipSize){
-        //TODO Zajęcia ZADANIE 1 cz. 1
+        int currValue = shipsMapForListView.get(drownedShipSize) - 1;
+        shipsMapForListView.put(drownedShipSize, currValue);
     }
 
     private void endGame(){

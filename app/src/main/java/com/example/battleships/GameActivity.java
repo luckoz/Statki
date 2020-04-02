@@ -171,7 +171,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder backPressedAlertDialog = new AlertDialog.Builder(this);
-        backPressedAlertDialog.setTitle("");
+        backPressedAlertDialog.setTitle(""); //TODO ZADANIE UZUEPLNIJ DIALOG TESKTAMI
         backPressedAlertDialog.setMessage("");
         backPressedAlertDialog.setNegativeButton("NEY", new DialogInterface.OnClickListener() {
             @Override

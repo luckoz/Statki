@@ -22,8 +22,6 @@ public class MenuActivity extends AppCompatActivity {
     public static final String GAME_PLAYER_KEY = "GAME_PLAYER_KEY";
     boolean isGameMP;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +36,11 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void initButtons() {
+        //TODO ZADANIE poprawić, aby nie znikały przyciski na zmianę. Po jednym kliknięciu nie wiadomo, że ten drugi przycisk istnieje
         newGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initMainActivity();
+                startGameActivity();
             }
         });
         statsBtn.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +63,7 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    private void initMainActivity() {
-
+    private void startGameActivity() {
         sharedPreferences = getSharedPreferences("menuSharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -73,12 +71,9 @@ public class MenuActivity extends AppCompatActivity {
         editor.putBoolean("areShipsPosRandom", isShipPositionRandomChck.isChecked());
         editor.apply();
 
-
         Intent intent = new Intent(getApplicationContext(), GameActivity.class);
         startActivity(intent);
     }
-
-
 
     private void initViews() {
         newGameBtn = findViewById(R.id.newGameBtn);

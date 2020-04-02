@@ -30,18 +30,17 @@ class Game {
 
     private void initBoardByMap(@NonNull HashMap<Integer, Integer> mapFromContract){
         board = new Board();
-            for (Map.Entry<Integer, Integer> entry : mapFromContract.entrySet()) {
-                int shipsAmount = entry.getValue();
-                for (int i = 0; i < shipsAmount; i++) {
-                    try{
-                        board.addRandomShip(entry.getKey());
-                    } catch (IllegalStateException e){
-                        //try again - reached a state with no available positions for new ship
-                        initBoardByMap(mapFromContract);
-                    }
+        for (Map.Entry<Integer, Integer> entry : mapFromContract.entrySet()) {
+            int shipsAmount = entry.getValue();
+            for (int i = 0; i < shipsAmount; i++) {
+                try{
+                    board.addRandomShip(entry.getKey());
+                } catch (IllegalStateException e){
+                    //try again - reached a state with no available positions for new ship
+                    initBoardByMap(mapFromContract);
                 }
             }
-
+        }
         Log.d("GAME", "Created Ships IDs are: " + board.getBusyCellsIds());
     }
 

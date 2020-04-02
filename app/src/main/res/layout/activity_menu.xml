@@ -7,6 +7,8 @@
     android:background="@color/menuColor"
     android:orientation="vertical">
 
+<!--TODO ZADANIE POPRAW PRZYCISKI, ZEBY BYLY ROWNE (TAK SAMO SZEROKIE I WYSOKIE)-->
+<!--I TEKST NIE ZACZYNAL SIE OD SAMEJ KRAWEDZI-->
     <Button
         android:id="@+id/newGameBtn"
         android:layout_width="wrap_content"
@@ -14,8 +16,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
         android:background="@color/colorX"
-        android:text="Start new game"
-        />
+        android:text="Start new game" />
 
     <Button
         android:id="@+id/optionsBtn"
@@ -24,8 +25,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
         android:text="Options"
-        android:background="@color/optionsColor"
-        />
+        android:background="@color/optionsColor" />
 
     <Button
         android:id="@+id/statsBtn"
@@ -34,9 +34,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
         android:text="Stats"
-        android:background="@color/colorCheck"
-        />
+        android:background="@color/colorCheck" />
 
+<!--TODO ZADANIE SPROBUJ ZROBIC, ŻEBY TE CHECKBOXY BYLY ROWNO (W SENSIE ZEBY LEWE KRAWEDZIE LEZALY NA JEDNEJ PROSTEJ)-->
+<!--TO TAKIE DODATKOWE, MOZEMY TO ZROBIC NA ZAJECIACH :) -->
     <CheckBox
         android:id="@+id/multiPlayerCheckB"
         android:layout_width="wrap_content"
@@ -50,16 +51,5 @@
         android:layout_height="wrap_content"
         android:text="random ship position"
         android:layout_gravity="center_horizontal"/>
-
-
-
-
-
-
-
-
-
-
-
 
 </LinearLayout>

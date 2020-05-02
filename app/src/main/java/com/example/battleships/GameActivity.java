@@ -148,9 +148,32 @@ public class GameActivity extends AppCompatActivity {
         for(Integer key : map.keySet()){
             //TODO domowe ZADANIE 1
             //Napisac logikę, najlepiej metodę, która obsłuży polską odmianę słowa "statek" zależnie od ilości pozostałych statkó do zbicia
-            stringsToReturn.add(map.get(key) + " statki " + key + " - masztowe");
+            stringsToReturn.add(map.get(key) + getRightShipsForm(map.get(key)) + key + " - masztowe");
         }
         return stringsToReturn;
+    }
+    String getRightShipsForm(Integer shipsNumber){
+        switch (getLastDigitOfNumber(shipsNumber)){
+            case 1:
+                return "statek";
+            case 2:
+            case 3:
+            case 4:
+                return "statki";
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 0:
+                return "statków";
+            default:
+                return "ships";
+        }
+    }
+
+    Integer getLastDigitOfNumber(Integer number){
+        return (int)number.toString().charAt(number.toString().length());
     }
 
     public void updateListView(String player, Map<Integer, Integer> updatedMap){
@@ -171,8 +194,8 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder backPressedAlertDialog = new AlertDialog.Builder(this);
-        backPressedAlertDialog.setTitle(""); //TODO ZADANIE UZUEPLNIJ DIALOG TESKTAMI
-        backPressedAlertDialog.setMessage("");
+        backPressedAlertDialog.setTitle("Do you want to quit?"); //TODO ZADANIE UZUEPLNIJ DIALOG TESKTAMI
+        backPressedAlertDialog.setMessage("Do you really, realy, really want to quit");
         backPressedAlertDialog.setNegativeButton("NEY", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

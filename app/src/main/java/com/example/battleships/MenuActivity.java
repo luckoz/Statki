@@ -48,8 +48,6 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isShipPositionRandomChck.setVisibility(View.GONE);
                 isGameMultiPlayerChck.setVisibility(View.GONE);
-                optionsBtn.setVisibility(View.VISIBLE);
-                statsBtn.setVisibility(View.GONE);
             }
         });
         optionsBtn.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +55,6 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isShipPositionRandomChck.setVisibility(View.VISIBLE);
                 isGameMultiPlayerChck.setVisibility(View.VISIBLE);
-                optionsBtn.setVisibility(View.GONE);
-                statsBtn.setVisibility(View.VISIBLE);
             }
         });
     }

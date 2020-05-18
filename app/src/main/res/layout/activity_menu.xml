@@ -7,34 +7,39 @@
     android:orientation="vertical"
     tools:context=".MenuActivity">
 
-    <!--TODO ZADANIE POPRAW PRZYCISKI, ZEBY BYLY ROWNE (TAK SAMO SZEROKIE I WYSOKIE)-->
-    <!--I TEKST NIE ZACZYNAL SIE OD SAMEJ KRAWEDZI-->
-    <Button
-        android:id="@+id/newGameBtn"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="153dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@color/colorX"
-        android:text="Start new game" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/optionsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@color/optionsColor"
-        android:text="Options" />
+        <Button
+            android:id="@+id/newGameBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25dp"
+            android:background="@color/colorX"
+            android:text="Start new game" />
 
-    <Button
-        android:id="@+id/statsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@color/colorCheck"
-        android:text="Stats" />
+        <Button
+            android:id="@+id/optionsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25dp"
+            android:background="@color/optionsColor"
+            android:text="Options" />
+
+        <Button
+            android:id="@+id/statsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25dp"
+            android:background="@color/colorCheck"
+            android:text="Stats" />
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"

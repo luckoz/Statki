@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorPrimaryDark"
@@ -12,24 +12,23 @@
         android:id="@+id/grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         tools:listitem="@layout/cell_item"
         tools:numColumns="8">
-
-
     </GridView>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        tools:listitem="@layout/ship_list_item"
+        android:layout_height="wrap_content">
+    </ListView>
 
     <Button
         android:id="@+id/nextPBtn"
         android:layout_width="wrap_content"
+        android:layout_gravity="end|bottom"
         android:layout_height="wrap_content"
-        android:text="next player"
-        />
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/ship_list_item"></ListView>
+        android:text="next player" />
 
 </LinearLayout>

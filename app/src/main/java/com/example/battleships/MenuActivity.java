@@ -36,7 +36,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void initButtons() {
-        //TODO ZADANIE poprawić, aby nie znikały przyciski na zmianę. Po jednym kliknięciu nie wiadomo, że ten drugi przycisk istnieje
         newGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +47,8 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isShipPositionRandomChck.setVisibility(View.GONE);
                 isGameMultiPlayerChck.setVisibility(View.GONE);
+                statsBtn.setVisibility(View.GONE);
+                optionsBtn.setVisibility(View.VISIBLE);
             }
         });
         optionsBtn.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +56,8 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isShipPositionRandomChck.setVisibility(View.VISIBLE);
                 isGameMultiPlayerChck.setVisibility(View.VISIBLE);
+                optionsBtn.setVisibility(View.GONE);
+                statsBtn.setVisibility(View.VISIBLE);
             }
         });
     }

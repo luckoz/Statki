@@ -144,36 +144,41 @@ public class GameActivity extends AppCompatActivity {
 
     private ArrayList<String> setUpList(Map<Integer, Integer> map){
         ArrayList<String> stringsToReturn = new ArrayList<>();
-//        stringsToReturn.add("Pozostało do zatopienia: ");
         for(Integer key : map.keySet()){
-            //TODO domowe ZADANIE 1
-            //Napisac logikę, najlepiej metodę, która obsłuży polską odmianę słowa "statek" zależnie od ilości pozostałych statkó do zbicia
-            stringsToReturn.add(map.get(key) + getRightShipsForm(map.get(key)) + key + " - masztowe");
+            stringsToReturn.add(map.get(key) + " " + getRightShipsForm(map.get(key), key));
         }
         return stringsToReturn;
     }
-    String getRightShipsForm(Integer shipsNumber){
-        switch (getLastDigitOfNumber(shipsNumber)){
+    String getRightShipsForm(Integer shipsNumber, int key){
+        switch (getLastDigitOfNumberUpTo99(shipsNumber)){
             case 1:
-                return "statek";
+                if(shipsNumber > 10)
+                    return String.format("statków %s - masztowych", key);
+                else
+                    return String.format("statek %s - masztowy", key);
             case 2:
             case 3:
             case 4:
-                return "statki";
+                if(shipsNumber < 20 && shipsNumber > 10)
+                    return String.format("statków %s - masztowych", key);
+                else
+                    return String.format("statki %s - masztowe", key);
             case 5:
             case 6:
             case 7:
             case 8:
             case 9:
             case 0:
-                return "statków";
+                return String.format("statków %s - masztowych", key);
             default:
-                return "ships";
+                return String.format("ships with %s poles", key);
         }
     }
 
-    Integer getLastDigitOfNumber(Integer number){
-        return (int)number.toString().charAt(number.toString().length());
+    int getLastDigitOfNumberUpTo99(Integer number){
+
+            return number % 10;
+
     }
 
     public void updateListView(String player, Map<Integer, Integer> updatedMap){
@@ -194,7 +199,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder backPressedAlertDialog = new AlertDialog.Builder(this);
-        backPressedAlertDialog.setTitle("Do you want to quit?"); //TODO ZADANIE UZUEPLNIJ DIALOG TESKTAMI
+        backPressedAlertDialog.setTitle("Do you want to quit?");
         backPressedAlertDialog.setMessage("Do you really, realy, really want to quit");
         backPressedAlertDialog.setNegativeButton("NEY", new DialogInterface.OnClickListener() {
             @Override

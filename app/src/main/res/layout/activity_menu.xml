@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity"
     android:background="@color/menuColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MenuActivity">
 
-<!--TODO ZADANIE POPRAW PRZYCISKI, ZEBY BYLY ROWNE (TAK SAMO SZEROKIE I WYSOKIE)-->
-<!--I TEKST NIE ZACZYNAL SIE OD SAMEJ KRAWEDZI-->
+    <!--TODO ZADANIE POPRAW PRZYCISKI, ZEBY BYLY ROWNE (TAK SAMO SZEROKIE I WYSOKIE)-->
+    <!--I TEKST NIE ZACZYNAL SIE OD SAMEJ KRAWEDZI-->
     <Button
         android:id="@+id/newGameBtn"
         android:layout_width="wrap_content"
@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
-        android:text="Options"
-        android:background="@color/optionsColor" />
+        android:background="@color/optionsColor"
+        android:text="Options" />
 
     <Button
         android:id="@+id/statsBtn"
@@ -33,23 +33,38 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
-        android:text="Stats"
-        android:background="@color/colorCheck" />
+        android:background="@color/colorCheck"
+        android:text="Stats" />
 
-<!--TODO ZADANIE SPROBUJ ZROBIC, ŻEBY TE CHECKBOXY BYLY ROWNO (W SENSIE ZEBY LEWE KRAWEDZIE LEZALY NA JEDNEJ PROSTEJ)-->
-<!--TO TAKIE DODATKOWE, MOZEMY TO ZROBIC NA ZAJECIACH :) -->
-    <CheckBox
-        android:id="@+id/multiPlayerCheckB"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="multi - player game"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center"
+        android:layout_margin="12dp">
 
-    <CheckBox
-        android:id="@+id/randomShipPosBtn"
-        android:layout_width="wrap_content"
+        <CheckBox
+            android:id="@+id/multiPlayerCheckB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/randomShipPosBtn"
+            android:layout_gravity="center_horizontal"
+            android:text="multi - player game" />
+
+        <CheckBox
+            android:id="@+id/randomShipPosBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/multiPlayerCheckB"
+            android:layout_gravity="center_horizontal"
+            android:text="random ship position"
+            tools:checked="true" />
+    </RelativeLayout>
+<!--    Work in progress-->
+    <ListView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="random ship position"
-        android:layout_gravity="center_horizontal"/>
+        />
+
+
 
 </LinearLayout>

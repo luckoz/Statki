@@ -28,6 +28,11 @@ class Game {
         shipsMapForListView = contract.getMap();
     }
 
+    Game(GameActivity context, String currentPlayer){
+        this.context = context;
+        this.currentPlayer = currentPlayer;
+    }
+
     private void initBoardByMap(@NonNull HashMap<Integer, Integer> mapFromContract){
         board = new Board();
         for (Map.Entry<Integer, Integer> entry : mapFromContract.entrySet()) {

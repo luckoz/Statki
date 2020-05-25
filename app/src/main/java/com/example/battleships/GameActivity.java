@@ -77,15 +77,26 @@ public class GameActivity extends AppCompatActivity {
     public void setUpGame(){
         sharedPrefs = getSharedPreferences("menuSharedPrefs", MODE_PRIVATE);
         isGame2P = sharedPrefs.getBoolean("isGameMP",false);
+        boolean isRandomPositionOn = sharedPrefs.getBoolean("areShipsPosRandom",true);
         Log.d("GAME_ACTIVITY", String.valueOf(isGame2P));
-        if(isGame2P){
+        if(isGame2P && !isRandomPositionOn){
+            setShipsPosPhase();
+
+        } else if (isGame2P) {
             gamePlayer1 = new Game(this, contract, player1Name);
             gamePlayer2 = new Game(this, contract, player2Name);
-        } else {
+        }
+        else {
             gamePlayer1= new Game(this, contract, player1Name);
         }
         shipsListForListView = setUpList(contract.getMap());
         shipsListForListView2 = setUpList(contract.getMap());
+    }
+
+    private void setShipsPosPhase() {
+        gamePlayer1 = new Game(this, player1Name);
+        gamePlayer2 = new Game(this, player2Name);
+        adapter = new SetShipPosAdapter(GameActivity.this, gamePlayer1);
     }
 
     private void switchGridView(){

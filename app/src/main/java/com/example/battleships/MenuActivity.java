@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -31,8 +32,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private void initLayouts() {
         initViews();
-        initButtons();
         initOptions();
+        initButtons();
     }
 
     private void initButtons() {
@@ -58,6 +59,18 @@ public class MenuActivity extends AppCompatActivity {
                 isGameMultiPlayerChck.setVisibility(View.VISIBLE);
                 optionsBtn.setVisibility(View.GONE);
                 statsBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        isGameMultiPlayerChck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    isShipPositionRandomChck.setChecked(true);
+                    isShipPositionRandomChck.setClickable(false);
+                } else {
+                    isShipPositionRandomChck.setClickable(true);
+                }
             }
         });
     }

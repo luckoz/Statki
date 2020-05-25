@@ -39,12 +39,8 @@ public class TwoPlayerGameStartingContract {
         Log.d("CONTRACT", "MAPA: " + map.toString());
     }
 
-    //TODO ZADANIE Napisz logikę poniższej metody, aby uniknąć sytuacji, w której istnieje możliwość, że nie będzie się dało ustawić wsyztskich statków na planszy.
-    //Zastanów się też i spróbuj użyć tej metody w kodzie we właściwym miejscu.
-    //Dla jasności - chcemy uniknąć sytuacji, gdy np wylosuje się ilosć statków 6 i wszystkie 4 masztowe.
-    //Apka może się niebezpiecznie zapętlić, więc z góry nie możemy dopuszczać do takiej sytuacji
+
     private boolean noPlaceForShipStateReachable(HashMap<Integer, Integer> shipsMap){
-// int rowLength ^
         int worstCaseBusyCount = 0;
         for (int shipLength : shipsMap.keySet()) {
             int shipCount = shipsMap.get((shipLength));

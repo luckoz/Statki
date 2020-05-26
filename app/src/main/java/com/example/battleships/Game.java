@@ -20,6 +20,7 @@ class Game {
     public Board board;
     String currentPlayer;
     Map<Integer, Integer> shipsMapForListView;
+    public boolean setupDone = false;
 
     Game(GameActivity context, TwoPlayerGameStartingContract contract, String currentPlayer) {
         this.context = context;
@@ -128,6 +129,10 @@ class Game {
             stringsToReturn.add(map.get(key) + " x " + key);
         }
         return stringsToReturn;
+    }
+
+    public void rotateShip(){
+
     }
 
 }

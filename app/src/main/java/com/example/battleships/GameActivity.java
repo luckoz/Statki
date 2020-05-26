@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,6 +23,9 @@ public class GameActivity extends AppCompatActivity {
     ListView shipListView;
     GridView gridView;
     Button nextPlayerBtn;
+    Button finishSetupBtn;
+    Button rotateBtn;
+    TextView infoTxtView;
 
     CAdapter adapter;
     ArrayAdapter listViewAdapter;
@@ -34,14 +38,9 @@ public class GameActivity extends AppCompatActivity {
     String player1Name = "1";
     String player2Name = "2";
 
-
     ArrayList<String> shipsListForListView;
     ArrayList<String> shipsListForListView2;
 
-    int shipsNum;
-    public int shipMaxSize;
-    int shipMinSize;
-    int shipLength;
     boolean isGame2P = false;
     int currentPlayer = 1;
 
@@ -59,10 +58,16 @@ public class GameActivity extends AppCompatActivity {
         initLayouts();
     }
     public void initLayouts(){
+        infoTxtView = findViewById(R.id.currentPlayerTxt);
         nextPlayerBtn = findViewById(R.id.nextPBtn);
+        rotateBtn = findViewById(R.id.rotateShipBtn);
+        finishSetupBtn = findViewById(R.id.finishSetupBtn);
         if(!isGame2P) {
             nextPlayerBtn.setVisibility(View.GONE);
+            rotateBtn.setVisibility(View.GONE);
+            finishSetupBtn.setVisibility(View.GONE);
         }
+
         shipListView = findViewById(R.id.listView);
         gridView = findViewById(R.id.grid);
         gridView.setNumColumns(BOARD_ROW);
@@ -72,7 +77,43 @@ public class GameActivity extends AppCompatActivity {
         listViewAdapter2 = new ArrayAdapter(this, R.layout.ship_list_item, R.id.text, shipsListForListView2);
         gridView.setAdapter(adapter);
         nextPlayerBtn.setOnClickListener(new NextPlayerOnClick());
+
         shipListView.setAdapter(listViewAdapter);
+
+        finishSetupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (currentPlayer){
+                    case 1:
+                        gamePlayer1.setupDone = true;
+                        switchGridView();
+                        break;
+                    case 2:
+                        gamePlayer2.setupDone = true;
+                        finishSetupBtn.setVisibility(View.GONE);
+                        nextPlayerBtn.setVisibility(View.VISIBLE);
+                        rotateBtn.setVisibility(View.GONE);
+                        adapter.shipsVisible = false;
+                        adapter.notifyDataSetChanged();
+                        updaterTopTextView();
+                        break;
+                }
+            }
+        });
+
+        rotateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (currentPlayer){
+                    case 1:
+                        gamePlayer1.rotateShip();
+                        break;
+                    case 2:
+                        gamePlayer2.rotateShip();
+                        break;
+                }
+            }
+        });
     }
     public void setUpGame(){
         sharedPrefs = getSharedPreferences("menuSharedPrefs", MODE_PRIVATE);
@@ -97,7 +138,6 @@ public class GameActivity extends AppCompatActivity {
                 shipListView.setAdapter(listViewAdapter);
                 shipsListForListView = setUpList(contract.getMap() );
                 listViewAdapter.notifyDataSetChanged();
-//                shipsListForListView.removeAll(gamePlayer1.shipIdsToRemove);
                 break;
             case 2:
                 currentPlayer--;
@@ -106,34 +146,10 @@ public class GameActivity extends AppCompatActivity {
                 shipListView.setAdapter(listViewAdapter2);
                 shipsListForListView2 = setUpList(contract.getMap());
                 listViewAdapter2.notifyDataSetChanged();
-//                shipsListForListView2.removeAll(gamePlayer2.shipIdsToRemove);
                 break;
         }
+        updaterTopTextView();
     }
-
-    public void setDifficulty(){
-
-
-        switch (difficulty){
-            case "EASY":
-                shipsNum = 3;
-                shipMaxSize = 5;
-                shipMinSize = 3;
-                break;
-            case "HARD":
-                shipsNum = 7;
-                shipMaxSize = 2;
-                shipMinSize = 1;
-                break;
-            case "NORMAL":
-            default:
-                shipsNum = 5;
-                shipMaxSize = 4;
-                shipMinSize = 2;
-                break;
-        }
-    }
-
 
     private class NextPlayerOnClick implements View.OnClickListener{
         @Override
@@ -149,6 +165,46 @@ public class GameActivity extends AppCompatActivity {
         }
         return stringsToReturn;
     }
+
+    int getLastDigitOfNumberUpTo99(Integer number){
+            return number % 10;
+    }
+
+    public void updateListView(String player, Map<Integer, Integer> updatedMap){
+        if(player.equals(player1Name)){
+            shipsListForListView.clear();
+            shipsListForListView.addAll(setUpList(updatedMap));
+            listViewAdapter.notifyDataSetChanged();
+        }else {
+            shipsListForListView2.clear();
+            shipsListForListView2.addAll(setUpList(updatedMap));
+            listViewAdapter2.notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder backPressedAlertDialog = new AlertDialog.Builder(this);
+        backPressedAlertDialog.setTitle("Do you want to quit?");
+        backPressedAlertDialog.setMessage("Do you really, realy, really want to quit");
+        backPressedAlertDialog.setNegativeButton("NEY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        backPressedAlertDialog.setPositiveButton("YEY", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        backPressedAlertDialog.create();
+        backPressedAlertDialog.show();
+    }
+
     String getRightShipsForm(Integer shipsNumber, int key){
         switch (getLastDigitOfNumberUpTo99(shipsNumber)){
             case 1:
@@ -175,46 +231,23 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    int getLastDigitOfNumberUpTo99(Integer number){
-
-            return number % 10;
-
-    }
-
-    public void updateListView(String player, Map<Integer, Integer> updatedMap){
-        if(player.equals(player1Name)){
-            shipsListForListView.clear();
-            shipsListForListView.addAll(setUpList(updatedMap));
-            listViewAdapter.notifyDataSetChanged();
-        }else {
-            shipsListForListView2.clear();
-            shipsListForListView2.addAll(setUpList(updatedMap));
-            listViewAdapter2.notifyDataSetChanged();
+    private void updaterTopTextView(){
+        switch (currentPlayer){
+            case 1:
+                if(gamePlayer1.setupDone){
+                    infoTxtView.setText("Player" + currentPlayer);
+                } else {
+                    infoTxtView.setText("SETUP SHIPS PLAYER " + currentPlayer );
+                }
+                break;
+            case 2:
+                if(gamePlayer2.setupDone){
+                    infoTxtView.setText("Player" + currentPlayer);
+                } else {
+                    infoTxtView.setText("SETUP SHIPS PLAYER " + currentPlayer );
+                }
+                break;
         }
-
     }
 
-
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder backPressedAlertDialog = new AlertDialog.Builder(this);
-        backPressedAlertDialog.setTitle("Do you want to quit?");
-        backPressedAlertDialog.setMessage("Do you really, realy, really want to quit");
-        backPressedAlertDialog.setNegativeButton("NEY", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        backPressedAlertDialog.setPositiveButton("YEY", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        });
-        backPressedAlertDialog.create();
-        backPressedAlertDialog.show();
-    }
 }

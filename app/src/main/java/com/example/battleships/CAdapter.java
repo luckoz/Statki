@@ -1,21 +1,28 @@
 package com.example.battleships;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 
-public class CAdapter extends BaseAdapter implements View.OnDragListener {
 
-    private static final boolean PREVIEW_SHIP_MODE = true;
+public class CAdapter extends BaseAdapter  implements View.OnDragListener  {
+
+    public boolean shipsVisible = true;
 
     Game game;
     Context context;
+    int currentDragId = -1;
+
     CAdapter(Context context, Game game){
         this.game = game;
         this.context = context;
@@ -51,7 +58,7 @@ public class CAdapter extends BaseAdapter implements View.OnDragListener {
             case UNCOVERED:
             case BUSY:
                 btn.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
-                if(PREVIEW_SHIP_MODE && game.board.getShipById(position) != null)
+                if(shipsVisible && game.board.getShipById(position) != null)
                     btn.setBackgroundColor(context.getResources().getColor(R.color.colorPreview));
                 break;
             case HIT:
@@ -71,6 +78,10 @@ public class CAdapter extends BaseAdapter implements View.OnDragListener {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!game.setupDone){
+                    //game.setShipSelected(game.board.getShipById(v.getId());
+                    return;
+                }
                 game.updateCellStatusOnClicked(position);
                 notifyDataSetChanged();
             }
@@ -79,32 +90,40 @@ public class CAdapter extends BaseAdapter implements View.OnDragListener {
         btn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if(game.setupDone)
+                    return false;
+                currentDragId = ((GridView) v.getParent().getParent()).getPositionForView(v);
                 v.startDragAndDrop(null, new View.DragShadowBuilder(v), null, 0);
                 return false;
             }
         });
 
+        btn.setOnDragListener(this);
         return cell;
     }
 
+
     @Override
     public boolean onDrag(View v, DragEvent event){
-        switch (event.getAction()){
+        if(game.setupDone)
+            return false;
+        switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
-                Toast.makeText(context, "STARTED", Toast.LENGTH_SHORT).show();
                 return true;
             case DragEvent.ACTION_DROP:
-                Toast.makeText(context, "DROP", Toast.LENGTH_SHORT).show();
-                return true;
-            case DragEvent.ACTION_DRAG_ENDED:
-                Toast.makeText(context, "END", Toast.LENGTH_SHORT).show();
-                return true;
-            case DragEvent.ACTION_DRAG_LOCATION:
-                Toast.makeText(context, "LOC CHANGED", Toast.LENGTH_SHORT).show();
+                int targetId = ((GridView) v.getParent().getParent()).getPositionForView(v);
+                Ship movedShip = game.board.getShipById(currentDragId);
+                ArrayList<Integer> newIds = new ArrayList<>();
+                for(int id : movedShip.IDs ) {
+                    id = id + targetId - currentDragId;
+                    newIds.add(id);
+                }
+                movedShip.IDs = newIds;
+                notifyDataSetChanged();
+                currentDragId = -1;
                 return true;
             default:
-                return true;
-
+                return false;
         }
     }
 

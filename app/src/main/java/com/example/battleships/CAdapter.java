@@ -79,7 +79,15 @@ public class CAdapter extends BaseAdapter  implements View.OnDragListener  {
             @Override
             public void onClick(View v) {
                 if(!game.setupDone){
-                    //game.setShipSelected(game.board.getShipById(v.getId());
+
+                    Ship ship = game.board.getShipById(((GridView) v.getParent().getParent()).getPositionForView(v));
+                    Log.d("ROTATE", "Ship clicked with id " + ship.getFirstId());
+
+                    if(ship != null){
+                        game.setShipSelected(ship);
+                        Log.d("ROTATE", "Ship clicked with id " + ship.getFirstId() + "NEXT STEP");
+                    }
+
                     return;
                 }
                 game.updateCellStatusOnClicked(position);

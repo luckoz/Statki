@@ -17,6 +17,8 @@ public class Ship{
         this.isHorizontal = isHorizontal;
     }
 
+    public Ship(){}
+
     int getSize(){
         return IDs.size();
     }

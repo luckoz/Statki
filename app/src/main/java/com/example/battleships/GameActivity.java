@@ -86,6 +86,7 @@ public class GameActivity extends AppCompatActivity {
                 switch (currentPlayer){
                     case 1:
                         gamePlayer1.setupDone = true;
+                        gamePlayer1.setShipSelected(null);
                         switchGridView();
                         break;
                     case 2:
@@ -94,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
                         nextPlayerBtn.setVisibility(View.VISIBLE);
                         rotateBtn.setVisibility(View.GONE);
                         adapter.shipsVisible = false;
+                        gamePlayer2.setShipSelected(null);
                         adapter.notifyDataSetChanged();
                         updaterTopTextView();
                         break;
@@ -104,12 +106,15 @@ public class GameActivity extends AppCompatActivity {
         rotateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("ROTATE", "clicked");
                 switch (currentPlayer){
                     case 1:
                         gamePlayer1.rotateShip();
+                        adapter.notifyDataSetChanged();
                         break;
                     case 2:
                         gamePlayer2.rotateShip();
+                        adapter.notifyDataSetChanged();
                         break;
                 }
             }
@@ -120,10 +125,11 @@ public class GameActivity extends AppCompatActivity {
         isGame2P = sharedPrefs.getBoolean("isGameMP",false);
         boolean isRandomPositionOn = sharedPrefs.getBoolean("areShipsPosRandom",true);
         Log.d("GAME_ACTIVITY", String.valueOf(isGame2P));
-        if(isGame2P && !isRandomPositionOn){
-            setShipsPosPhase();
-
-        } else if (isGame2P) {
+//        if(isGame2P && !isRandomPositionOn){
+//            setShipsPosPhase();
+//
+//        }
+        if (isGame2P) {
             gamePlayer1 = new Game(this, contract, player1Name);
             gamePlayer2 = new Game(this, contract, player2Name);
         }
@@ -137,7 +143,6 @@ public class GameActivity extends AppCompatActivity {
     private void setShipsPosPhase() {
         gamePlayer1 = new Game(this, player1Name);
         gamePlayer2 = new Game(this, player2Name);
-        adapter = new SetShipPosAdapter(GameActivity.this, gamePlayer1);
     }
 
     private void switchGridView(){
@@ -149,6 +154,7 @@ public class GameActivity extends AppCompatActivity {
                 shipListView.setAdapter(listViewAdapter);
                 shipsListForListView = setUpList(contract.getMap() );
                 listViewAdapter.notifyDataSetChanged();
+
                 break;
             case 2:
                 currentPlayer--;

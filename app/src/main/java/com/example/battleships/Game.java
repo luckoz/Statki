@@ -21,6 +21,7 @@ class Game {
     String currentPlayer;
     Map<Integer, Integer> shipsMapForListView;
     public boolean setupDone = false;
+    private Ship selectedShip = null;
 
     Game(GameActivity context, TwoPlayerGameStartingContract contract, String currentPlayer) {
         this.context = context;
@@ -58,7 +59,7 @@ class Game {
                     board.updateSingleCell(cellIndex, MISS);
                 } else {
                     board.updateSingleCell(cellIndex, HIT);
-                   handleShipHit(shipOnClickedCell);
+                    handleShipHit(shipOnClickedCell);
                 }
                 break;
             case UNCOVERED:
@@ -131,8 +132,31 @@ class Game {
         return stringsToReturn;
     }
 
-    public void rotateShip(){
 
+    public void setShipSelected(Ship shipSelected){
+        selectedShip = shipSelected;
+    }
+    public void rotateShip(){
+        Log.d("ROTATE", "roatting ship nullable");
+
+        if(selectedShip != null){
+            Log.d("ROTATE", "roatting ship is not null");
+
+            int selectedShipFirstId = selectedShip.getFirstId();
+            if(selectedShip.isHorizontal){
+                for(int i = 0; i < selectedShip.IDs.size(); i++){
+                    selectedShip.IDs.set(i, selectedShip.getFirstId() + (i * Constants.BOARD_ROW));
+                }
+            }else{
+                for(int i = 0; i < selectedShip.IDs.size(); i++){
+                    selectedShip.IDs.set(i, selectedShip.getFirstId() + i);
+                }
+            }
+            selectedShip.isHorizontal = !selectedShip.isHorizontal;
+
+            int shipIndex = board.ships.indexOf(board.getShipById(selectedShipFirstId));
+            board.ships.set(shipIndex, selectedShip);
+        }
     }
 
 }

@@ -62,11 +62,7 @@ public class GameActivity extends AppCompatActivity {
         nextPlayerBtn = findViewById(R.id.nextPBtn);
         rotateBtn = findViewById(R.id.rotateShipBtn);
         finishSetupBtn = findViewById(R.id.finishSetupBtn);
-        if(!isGame2P) {
-            nextPlayerBtn.setVisibility(View.GONE);
-            rotateBtn.setVisibility(View.GONE);
-            finishSetupBtn.setVisibility(View.GONE);
-        }
+
 
         shipListView = findViewById(R.id.listView);
         gridView = findViewById(R.id.grid);
@@ -79,6 +75,15 @@ public class GameActivity extends AppCompatActivity {
         nextPlayerBtn.setOnClickListener(new NextPlayerOnClick());
 
         shipListView.setAdapter(listViewAdapter);
+        updaterTopTextView();
+
+        if(!isGame2P) {
+            nextPlayerBtn.setVisibility(View.GONE);
+            rotateBtn.setVisibility(View.GONE);
+            finishSetupBtn.setVisibility(View.GONE);
+            infoTxtView.setVisibility(View.GONE);
+            adapter.shipsVisible = false;
+        }
 
         finishSetupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +101,7 @@ public class GameActivity extends AppCompatActivity {
                         rotateBtn.setVisibility(View.GONE);
                         adapter.shipsVisible = false;
                         gamePlayer2.setShipSelected(null);
-                        adapter.notifyDataSetChanged();
-                        updaterTopTextView();
+                        switchGridView();
                         break;
                 }
             }
@@ -124,45 +128,43 @@ public class GameActivity extends AppCompatActivity {
         sharedPrefs = getSharedPreferences("menuSharedPrefs", MODE_PRIVATE);
         isGame2P = sharedPrefs.getBoolean("isGameMP",false);
         boolean isRandomPositionOn = sharedPrefs.getBoolean("areShipsPosRandom",true);
-        Log.d("GAME_ACTIVITY", String.valueOf(isGame2P));
-//        if(isGame2P && !isRandomPositionOn){
-//            setShipsPosPhase();
-//
-//        }
+
         if (isGame2P) {
             gamePlayer1 = new Game(this, contract, player1Name);
             gamePlayer2 = new Game(this, contract, player2Name);
         }
         else {
             gamePlayer1= new Game(this, contract, player1Name);
+            gamePlayer1.setupDone = true;
         }
         shipsListForListView = setUpList(contract.getMap());
         shipsListForListView2 = setUpList(contract.getMap());
     }
 
-    private void setShipsPosPhase() {
-        gamePlayer1 = new Game(this, player1Name);
-        gamePlayer2 = new Game(this, player2Name);
-    }
-
     private void switchGridView(){
         switch (currentPlayer){
             case 1:
-                currentPlayer++;
-                adapter.setGame(gamePlayer1);
+                if(isGame2P && !gamePlayer2.setupDone){
+                    adapter.setGame(gamePlayer2);
+                    currentPlayer++;
+                    shipListView.setAdapter(listViewAdapter2);
+                    listViewAdapter2.notifyDataSetChanged();
+                } else {
+                    adapter.setGame(gamePlayer1);
+                    currentPlayer++;
+                    shipListView.setAdapter(listViewAdapter);
+                    listViewAdapter.notifyDataSetChanged();
+                }
+//                shipsListForListView2 = setUpList(contract.getMap());
                 adapter.notifyDataSetChanged();
-                shipListView.setAdapter(listViewAdapter);
-                shipsListForListView = setUpList(contract.getMap() );
-                listViewAdapter.notifyDataSetChanged();
-
                 break;
             case 2:
                 currentPlayer--;
                 adapter.setGame(gamePlayer2);
-                adapter.notifyDataSetChanged();
                 shipListView.setAdapter(listViewAdapter2);
-                shipsListForListView2 = setUpList(contract.getMap());
+//                shipsListForListView = setUpList(contract.getMap());
                 listViewAdapter2.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 break;
         }
         updaterTopTextView();
@@ -188,11 +190,11 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void updateListView(String player, Map<Integer, Integer> updatedMap){
-        if(player.equals(player1Name)){
+        if(!player.equals(player1Name)){
             shipsListForListView.clear();
             shipsListForListView.addAll(setUpList(updatedMap));
             listViewAdapter.notifyDataSetChanged();
-        }else {
+        } else {
             shipsListForListView2.clear();
             shipsListForListView2.addAll(setUpList(updatedMap));
             listViewAdapter2.notifyDataSetChanged();

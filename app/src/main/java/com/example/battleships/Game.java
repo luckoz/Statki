@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.telephony.CellSignalStrength;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -30,11 +31,6 @@ class Game {
         shipsMapForListView = contract.getMap();
     }
 
-    Game(GameActivity context, String currentPlayer){
-        this.context = context;
-        this.currentPlayer = currentPlayer;
-    }
-
     private void initBoardByMap(@NonNull HashMap<Integer, Integer> mapFromContract){
         board = new Board();
         for (Map.Entry<Integer, Integer> entry : mapFromContract.entrySet()) {
@@ -52,23 +48,12 @@ class Game {
     }
 
     public void updateCellStatusOnClicked(Integer cellIndex) {
-        switch (board.getCellStatusById(cellIndex)) {
-            case BUSY:
-                Ship shipOnClickedCell = board.getShipById(cellIndex);
-                if (shipOnClickedCell == null) {
-                    board.updateSingleCell(cellIndex, MISS);
-                } else {
-                    board.updateSingleCell(cellIndex, HIT);
-                    handleShipHit(shipOnClickedCell);
-                }
-                break;
-            case UNCOVERED:
-                board.updateSingleCell(cellIndex, MISS);
-                break;
-            case DROWNED:
-            case MISS:
-            case HIT:
-                return;
+        Ship shipOnClickedCell = board.getShipById(cellIndex);
+        if(shipOnClickedCell != null){
+            board.updateSingleCell(cellIndex, HIT);
+            handleShipHit(shipOnClickedCell);
+        } else {
+            board.updateSingleCell(cellIndex, MISS);
         }
     }
 
@@ -156,6 +141,20 @@ class Game {
 
             int shipIndex = board.ships.indexOf(board.getShipById(selectedShipFirstId));
             board.ships.set(shipIndex, selectedShip);
+            onShipMoved();
+        }
+    }
+
+    public ArrayList<Integer> getSelectedShipIds(){
+        if(selectedShip == null)
+            return null;
+        return selectedShip.IDs;
+    }
+
+    public void onShipMoved(){
+        board.updateCells(board.cellArray, UNCOVERED);
+        for(Ship ship : board.ships){
+            board.setBusyCellsForShip(ship);
         }
     }
 

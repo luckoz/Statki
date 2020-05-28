@@ -75,17 +75,22 @@ public class CAdapter extends BaseAdapter  implements View.OnDragListener  {
                 break;
         }
 
+        if(game.getSelectedShipIds() != null && game.getSelectedShipIds().contains(position)){
+            btn.setBackgroundColor(context.getResources().getColor(R.color.colorX));
+        }
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!game.setupDone){
-
-                    Ship ship = game.board.getShipById(((GridView) v.getParent().getParent()).getPositionForView(v));
-                    Log.d("ROTATE", "Ship clicked with id " + ship.getFirstId());
+                    int indexClicked = ((GridView) v.getParent().getParent()).getPositionForView(v);
+                    Ship ship = game.board.getShipById(indexClicked);
 
                     if(ship != null){
                         game.setShipSelected(ship);
                         Log.d("ROTATE", "Ship clicked with id " + ship.getFirstId() + "NEXT STEP");
+                        notifyDataSetChanged();
                     }
 
                     return;
@@ -127,6 +132,7 @@ public class CAdapter extends BaseAdapter  implements View.OnDragListener  {
                     newIds.add(id);
                 }
                 movedShip.IDs = newIds;
+                game.onShipMoved();
                 notifyDataSetChanged();
                 currentDragId = -1;
                 return true;
@@ -134,5 +140,7 @@ public class CAdapter extends BaseAdapter  implements View.OnDragListener  {
                 return false;
         }
     }
+
+
 
 }

@@ -173,7 +173,7 @@ public class Board {
     }
 
 
-    private void setBusyCellsForShip(Ship ship){
+    public void setBusyCellsForShip(Ship ship){
         ArrayList<Integer> idsToSetBusy = new ArrayList<>();
         ArrayList<Integer> idsToRemove = new ArrayList<>();
         int startingId = ship.getFirstId() - BOARD_ROW - 1;
